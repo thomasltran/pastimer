@@ -1,7 +1,7 @@
 # pastimer
 The best Pomodoro Timer periodt.
 
-#Getting Started
+# Getting Started
 Environment installation and setup:
 1.) [IntelliJ](https://www.jetbrains.com/idea/download/#section=windows)[^1]
 2.) [Adoptium - select Temurin 11 (LTS)](https://adoptium.net/?variant=openjdk11&jvmVariant=hotspot)
