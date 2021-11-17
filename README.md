@@ -10,3 +10,10 @@ Environment installation and setup:
 5. [libGDX guide](http://libgdx.com/dev/import-and-running/)
 
 [^1]: Eclipse probably works as well, but I am using this since the guides are more structured around it.
+
+## Features
+  - Adjustable timer with intervals for studying and rest
+  - Background options
+  - To-do list
+  - Minigames (Ball, TypeRacer, Minesweeper...)
+  - APIs (Spotify, Weather...)
