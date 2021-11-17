@@ -17,3 +17,7 @@ Environment installation and setup:
   - To-do list
   - Minigames (Ball, TypeRacer, Minesweeper...)
   - APIs (Spotify, Weather...)
+
+## School
+`setx JAVA_HOME "C:\Program Files\Java\jdk1.8.0"`
+`setx PATH "%PATH%;%JAVA_HOME%\bin";`
