@@ -9,4 +9,4 @@ Environment installation and setup:
 4. Connect to GitHub and clone this repository
 5. [libGDX guide](http://libgdx.com/dev/import-and-running/)
 
-[^1]. Eclipse probably works as well, but I am using this since the guides are more structured around it.
+[^1]: Eclipse probably works as well, but I am using this since the guides are more structured around it.
