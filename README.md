@@ -27,4 +27,6 @@ Environment installation and setup:
   - Pierre (Minesweeper)
   - Thomas (TypeRacer, Space Invaders type thing, Snowboarding)
   - Ja-Zhua (Ball)
- ## APIs (Spotify, Weather)
+ ### APIs
+  - Spotify
+  - Weather
