@@ -9,7 +9,7 @@ Environment installation and setup:
 4. Connect to GitHub and clone this repository
 5. [libGDX guide](http://libgdx.com/dev/import-and-running/)
 
-[^1]: Eclipse probably works as well, but I am using this since the guides are more structured around it.
+[^1]: Eclipse probably works as well, but I am using this since the guides are more structured around it. Using VSCode in school; works well so far, but not sure how it will go later down the line.
 
 ## Features
   - Adjustable timer with intervals for studying and rest
@@ -23,8 +23,8 @@ Environment installation and setup:
 `setx PATH "%PATH%;%JAVA_HOME%\bin";`
 
 ## Planning
-  - Minigames (3 per person):
-    - Pierre (Minesweeper)
-    - Thomas (TypeRacer, Space Invaders type thing, Snowboarding)
-    - Ja-Zhua (Ball)
-  - APIs (Spotify, Weather)
+### Minigames (3 per person):
+  - Pierre (Minesweeper)
+  - Thomas (TypeRacer, Space Invaders type thing, Snowboarding)
+  - Ja-Zhua (Ball)
+ ## APIs (Spotify, Weather)
