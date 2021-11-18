@@ -15,9 +15,16 @@ Environment installation and setup:
   - Adjustable timer with intervals for studying and rest
   - Background options
   - To-do list
-  - Minigames (Ball, TypeRacer, Minesweeper...)
-  - APIs (Spotify, Weather...)
+  - Minigames
+  - APIs
 
-## School
+## School Setup
 `setx JAVA_HOME "C:\Program Files\Java\jdk1.8.0"`
 `setx PATH "%PATH%;%JAVA_HOME%\bin";`
+
+## Planning
+  - Minigames (3 per person):
+    - Pierre (Minesweeper)
+    - Thomas (TypeRacer, Space Invaders type thing, Snowboarding)
+    - Ja-Zhua (Ball)
+  - APIs (Spotify, Weather)
