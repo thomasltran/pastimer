@@ -19,9 +19,22 @@ Environment installation and setup:
   - APIs
 
 ## School Setup
-`setx JAVA_HOME "C:\Program Files\Java\jdk1.8.0"`
-`setx PATH "%PATH%;%JAVA_HOME%\bin";`
-
+  - `setx JAVA_HOME "C:\Program Files\Java\jdk1.8.0"`
+  - `setx PATH "%PATH%;%JAVA_HOME%\bin"`[^2](not sure if having a semi-colon at the end or not affects it)
+  
+## Git commands for branching
+  - `git checkout -b myBranch`: creates a new branch and switches you to it
+  - `git branch`: tells you what branch you are in
+  - `git checkout branchName`: switches you to a branch
+  - `git push origin myBranch`: pushes your branch to the repository
+  
+## How to get up to date with the main repository
+  - Ctrl + Shift + G
+  - Three dots on the top next to Source Control
+  - Pull, Push dropdown arrow
+  - Fetch from all remotes
+  - Three dots again and Pull
+  
 ## Planning
 ### Minigames (3 per person):
   - Pierre (Minesweeper)
