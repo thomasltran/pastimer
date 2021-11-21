@@ -1,6 +1,6 @@
 package com.pastimer.desktop;
 
-import java.util.Iterator;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -9,32 +9,59 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
+
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.*;
 
 public class GameScreen implements Screen {
-    final Drop game;
+    final Minesweeper game;
 
-    Texture dropImage;
-    Texture bucketImage;
+   
+    Texture zero;
+    Texture one;
+    Texture two;
+    Texture three;
+    Texture four;
+    Texture five;
+    Texture six;
+    Texture seven;
+    Texture eight;
+    Texture flag;
+    Texture starting;
+    Texture bomb;
+    Set<Integer> mineLocation;
     Sound dropSound;
     Music rainMusic;
     OrthographicCamera camera;
-    Rectangle bucket;
     Array<Rectangle> raindrops;
     long lastDropTime;
-    int dropsGathered;
+    int bombCount;
+    int[][] board, pieces;
+    int size = 30;
+    
 
-    public GameScreen(final Drop game) {
+    public GameScreen(final Minesweeper game) {
         this.game = game;
 
         // load the images for the droplet and the bucket, 64x64 pixels each
-        dropImage = new Texture(Gdx.files.internal("droplet.png"));
-        bucketImage = new Texture(Gdx.files.internal("bucket.png"));
+       
+        zero = new Texture(Gdx.files.internal("0.png"));
+        one = new Texture(Gdx.files.internal("1.png"));
+        two = new Texture(Gdx.files.internal("2.png"));
+        three = new Texture(Gdx.files.internal("3.png"));
+        four = new Texture(Gdx.files.internal("4.png"));
+        five = new Texture(Gdx.files.internal("5.png"));
+        six = new Texture(Gdx.files.internal("6.png"));
+        seven = new Texture(Gdx.files.internal("7.png"));
+        eight = new Texture(Gdx.files.internal("8.png"));
+        flag = new Texture(Gdx.files.internal("flagged.png"));
+        starting = new Texture(Gdx.files.internal("facingDown.png"));
+        bomb = new Texture(Gdx.files.internal("bomb.png"));
+
 
         // load the drop sound effect and the rain background "music"
         dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
@@ -44,30 +71,227 @@ public class GameScreen implements Screen {
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-
-        // create a Rectangle to logically represent the bucket
-        bucket = new Rectangle();
-        bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
-        bucket.y = 20; // bottom left corner of the bucket is 20 pixels above
-        // the bottom screen edge
-        bucket.width = 64;
-        bucket.height = 64;
-
-        // create the raindrops array and spawn the first raindrop
-        raindrops = new Array<Rectangle>();
-        spawnRaindrop();
+        board =new int[size][size];
+        pieces = new int[size][size];
+        generateMineLocation();
+        addBombs();
+        for(int r=0;r<board.length;r++)	
+        {
+           for(int c=0;c<board[0].length;c++)
+           {
+           
+              if(board[r][c] != -1){
+                 board[r][c] = bombCount(r,c);
+              }
+           } 
+        }
+  
 
     }
 
-    private void spawnRaindrop() {
-        Rectangle raindrop = new Rectangle();
-        raindrop.x = MathUtils.random(0, 800 - 64);
-        raindrop.y = 480;
-        raindrop.width = 64;
-        raindrop.height = 64;
-        raindrops.add(raindrop);
-        lastDropTime = TimeUtils.nanoTime();
+   
+    public void addBombs() {
+    int temp = 0;
+        board = new int[size][size];
+     for(int r = 0; r < size; r++) {
+         for(int c = 0; c < size; c++) {
+            if(mineLocation.contains(temp)){
+                board[r][c]=-1;
+             }
+             else{
+                board[r][c]=0;
+             }
+             temp++;        
+             pieces[r][c] = 0; //starts all things blank
+          }
+ 
+        
     }
+}
+
+    public void generateMineLocation() {
+        mineLocation = new HashSet<Integer>();
+        int mineCount = 0;
+        while (mineCount < 40) {
+            int random = (int) (Math.random() * (256));
+            if (!mineLocation.contains(random)) {
+                mineLocation.add(random);
+                mineCount++;
+            }
+        }
+    }
+    public int bombCount(int r, int c){
+        int bombCount=0;
+        while(r !=0 && c!=0 && r!=board.length-1 && c!= board[0].length-1){
+           if(board[r][c+1]==-1){ //right
+              bombCount++;
+           }
+           if(board[r][c-1]==-1){   //left
+              bombCount++;
+           }
+           if(board[r+1][c]==-1){  //down
+              bombCount++;
+           }
+           if(board[r-1][c]==-1){ //up
+              bombCount++;
+           }
+           if(board[r-1][c-1]==-1){  //top-left
+              bombCount++;
+           }
+           if(board[r-1][c+1]==-1){  //top-right
+              bombCount++;
+           }
+           if(board[r+1][c-1]==-1){   //bottom-left
+              bombCount++;
+           }
+           if(board[r+1][c+1]==-1){   //bottom-right
+              bombCount++;
+           
+           }
+           break;
+        }
+        if(r==0 && c==0){
+           if(board[r][c+1]==-1){ //right
+              bombCount++;
+           }
+           if(board[r+1][c]==-1){  //down
+              bombCount++;
+           }
+           if(board[r+1][c+1]==-1){   //bottom-right
+              bombCount++;
+           }
+        
+        }
+        if(r==0 && c==board[0].length-1){
+           if(board[r][c-1]==-1){   //left
+              bombCount++;
+           }
+           if(board[r+1][c]==-1){  //down
+              bombCount++;
+           }
+           if(board[r+1][c-1]==-1){   //bottom-left
+              bombCount++;
+           }
+           
+        }
+        if(r==board.length-1 && c==0){
+           if(board[r-1][c]==-1){ //up
+              bombCount++;
+           }
+           if(board[r][c+1]==-1){ //right
+              bombCount++;
+           }
+           if(board[r-1][c+1]==-1){  //top-right
+              bombCount++;
+           }
+        }
+        if(r==board.length-1 && c==board[0].length-1){
+           if(board[r-1][c]==-1){ //up
+              bombCount++;
+           }
+           if(board[r][c-1]==-1){   //left
+              bombCount++;
+           }
+           if(board[r-1][c-1]==-1){  //top-left
+              bombCount++;
+           }
+           
+        }
+        if(c==0 && r != 0 && r !=board.length-1){
+           if(board[r][c+1]==-1){ //right
+              bombCount++;
+           }
+           if(board[r-1][c+1]==-1){  //top-right
+              bombCount++;
+           }
+           if(board[r+1][c+1]==-1){   //bottom-right
+              bombCount++;
+           }
+           if(board[r-1][c]==-1){ //up
+              bombCount++;
+           }
+           if(board[r+1][c]==-1){  //down
+              bombCount++;
+           }
+        }
+        if(r==0 && c != 0 && c !=board[0].length-1){
+           if(board[r+1][c]==-1){  //down
+              bombCount++;
+           }
+           if(board[r+1][c+1]==-1){   //bottom-right
+              bombCount++;
+           }
+           if(board[r+1][c-1]==-1){   //bottom-left
+              bombCount++;
+           }
+           if(board[r][c+1]==-1){ //right
+              bombCount++;
+           }
+           if(board[r][c-1]==-1){   //left
+              bombCount++;
+           }
+        }
+        if(c==board[0].length-1 && r != 0 && r !=board.length-1){
+           
+           if(board[r-1][c]==-1){ //up
+              bombCount++;
+           }
+           if(board[r+1][c]==-1){  //down
+              bombCount++;
+           }
+           if(board[r][c-1]==-1){   //left
+              bombCount++;
+           }
+           if(board[r-1][c-1]==-1){  //top-left
+              bombCount++;
+           }
+           if(board[r+1][c-1]==-1){   //bottom-left
+              bombCount++;
+           }
+        }
+        if(r==board.length-1 && c != 0 && c !=board[0].length-1){
+           if(board[r][c+1]==-1){ //right
+              bombCount++;
+           }
+           if(board[r][c-1]==-1){   //left
+              bombCount++;
+           }
+           if(board[r-1][c]==-1){ //up
+              bombCount++;
+           }
+           if(board[r-1][c-1]==-1){  //top-left
+              bombCount++;
+           }
+           if(board[r-1][c+1]==-1){  //top-right
+              bombCount++;
+           }
+        }
+     
+      
+        
+        return bombCount;
+     
+     }
+     public void floodFill(int r, int c){
+        if(board[r][c]==0 && r!=0 && r!= board.length-1 && c!=0 && c!=board[0].length-1 && pieces[r][c]!=1){
+        pieces[r][c]=1;        
+        if(board[r][c+1]==0){
+            floodFill(r,c+1);
+        }
+         floodFill(r,c+1);
+         floodFill(r+1, c);
+         floodFill(r-1,c);
+         floodFill(r,c-1);
+        
+        }
+         else{
+         return;
+         }
+        return;
+        
+         }
+      
+  
 
     @Override
     public void render(float delta) {
@@ -87,11 +311,51 @@ public class GameScreen implements Screen {
         // begin a new batch and draw the bucket and
         // all drops
         game.batch.begin();
-        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
-        game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
-        for (Rectangle raindrop : raindrops) {
-            game.batch.draw(dropImage, raindrop.x, raindrop.y);
+        for(int i=0;i<board.length;i++){
+            for(int j=0;j<board[0].length;j++){
+                if(board[i][j]==-1){
+                    game.batch.draw(bomb, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==0){
+                    game.batch.draw(zero, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==1){
+                    game.batch.draw(one, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==2){
+                    game.batch.draw(two, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==3){
+                    game.batch.draw(three, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==4){
+                    game.batch.draw(four, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==5){
+                    game.batch.draw(five, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==6){
+                    game.batch.draw(six, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==7){
+                    game.batch.draw(seven, j*(size), i*(size), size, size);
+                }
+                else if(board[i][j]==8){
+                    game.batch.draw(eight, j*(size), i*(size), size, size);
+                }
+            }
         }
+        for(int i=0;i<board.length;i++){
+            for(int j=0;j<board[0].length;j++){
+         if(pieces[i][j]==0){
+             game.batch.draw(starting, j*(size), i*(size), size, size);
+            }
+            else if(pieces[i][j]==1){
+                game.batch.draw(flag, j*(size), i*(size), size, size);
+                }
+            }}
+       
+        
         game.batch.end();
 
         // process user input
@@ -99,38 +363,34 @@ public class GameScreen implements Screen {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            bucket.x = touchPos.x - 64 / 2;
+            int x = (int) (touchPos.x / size);
+            int y = (int) (touchPos.y / size);
+            if(pieces[x][y]==0){
+                if(board[x][y]==-1){
+                    game.setScreen(new GameOverScreen(game));
+                }
+                else{
+                    pieces[x][y]=1;
+                    if(board[x][y]==0){
+                        floodFill(x,y);
+                    }
+                }
+            }
+            else if(pieces[x][y]==1){
+                pieces[x][y]=0;
+            }
         }
-        if (Gdx.input.isKeyPressed(Keys.LEFT))
-            bucket.x -= 200 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Keys.RIGHT))
-            bucket.x += 200 * Gdx.graphics.getDeltaTime();
+        
 
         // make sure the bucket stays within the screen bounds
-        if (bucket.x < 0)
-            bucket.x = 0;
-        if (bucket.x > 800 - 64)
-            bucket.x = 800 - 64;
-
+       
         // check if we need to create a new raindrop
-        if (TimeUtils.nanoTime() - lastDropTime > 1000000000)
-            spawnRaindrop();
+        
 
         // move the raindrops, remove any that are beneath the bottom edge of
         // the screen or that hit the bucket. In the later case we increase the
         // value our drops counter and add a sound effect.
-        Iterator<Rectangle> iter = raindrops.iterator();
-        while (iter.hasNext()) {
-            Rectangle raindrop = iter.next();
-            raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-            if (raindrop.y + 64 < 0)
-                iter.remove();
-            if (raindrop.overlaps(bucket)) {
-                dropsGathered++;
-                dropSound.play();
-                iter.remove();
-            }
-        }
+       
     }
 
     @Override
@@ -158,10 +418,22 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        dropImage.dispose();
-        bucketImage.dispose();
+        
         dropSound.dispose();
         rainMusic.dispose();
-    }
+         zero.dispose();
+            one.dispose();
+            two.dispose();
+            three.dispose();
+            four.dispose();
+            five.dispose();
+            six.dispose();
+            seven.dispose();
+            eight.dispose();
+            bomb.dispose();
+            flag.dispose();
+            starting.dispose();
+            
 
+}
 }
