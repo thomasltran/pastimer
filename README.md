@@ -37,7 +37,7 @@ Environment installation and setup:
   
 ## Planning
 ### Minigames (3 per person):
-  - Pierre (Minesweeper)
+  - Pierre (Minesweeper, Flappy Bird)
   - Thomas (TypeRacer, Space Invaders type thing, Snowboarding)
   - Ja-Zhua (Ball)
  ### APIs
