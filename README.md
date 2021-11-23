@@ -20,7 +20,8 @@ Environment installation and setup:
 
 ## School Setup
   - `setx JAVA_HOME "C:\Program Files\Java\jdk1.8.0"`
-  - `setx PATH "%PATH%;%JAVA_HOME%\bin"`[^2](not sure if having a semi-colon at the end or not affects it)
+  - `setx PATH "%PATH%;%JAVA_HOME%\bin"`[^2]
+[^2]: (not sure if having a semi-colon at the end or not affects it)
   
 ## Git commands for branching
   - `git checkout -b myBranch`: creates a new branch and switches you to it
