@@ -1,3 +1,4 @@
+//to-do: animate in letters, don't have to click to enter timer
 package com.pastimer.desktop;
 
 import com.badlogic.gdx.Gdx;
@@ -5,16 +6,16 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class MainMenuScreen implements Screen {
+public class WelcomeScreen implements Screen {
 
-    final Drop game;
+    final Pastimer intro;
     OrthographicCamera camera;
 
-    public MainMenuScreen(final Drop gam) {
-        game = gam;
+    public WelcomeScreen(final Pastimer in) {
+        intro = in;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, 1920, 1080);
     }
 
     @Override
@@ -22,17 +23,17 @@ public class MainMenuScreen implements Screen {
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        intro.batch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
-        game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
-        game.batch.end();
+        intro.batch.begin();
+        intro.font.draw(intro.batch, "Pastimer ", 100, 150);
+        intro.font.draw(intro.batch, "Tap anywhere to begin!", 100, 100);
+        intro.batch.end();
 
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
+        /*if (Gdx.input.isTouched()) {
+            intro.setScreen(new GameScreen(new Drop()));
             dispose();
-        }
+        }*/
     }
 
     @Override
