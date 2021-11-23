@@ -8,11 +8,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class WelcomeScreen implements Screen {
 
-    final Pastimer intro;
+    final Pastimer app;
     OrthographicCamera camera;
 
     public WelcomeScreen(final Pastimer in) {
-        intro = in;
+        app = in;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -20,18 +20,18 @@ public class WelcomeScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(220/255.0f, 133/255.0f, 133/255.0f, 255f);
 
         camera.update();
-        intro.batch.setProjectionMatrix(camera.combined);
+        app.batch.setProjectionMatrix(camera.combined);
 
-        intro.batch.begin();
-        intro.font.draw(intro.batch, "Pastimer ", 100, 150);
-        intro.font.draw(intro.batch, "Tap anywhere to begin!", 100, 100);
-        intro.batch.end();
+        app.batch.begin();
+        app.font.draw(app.batch, "Pastimer ", 1920/2, 1080/2);
+        app.font.draw(app.batch, "Airvent", 1920/2, 100);
+        app.batch.end();
 
         /*if (Gdx.input.isTouched()) {
-            intro.setScreen(new GameScreen(new Drop()));
+            app.setScreen(new Timer(app));
             dispose();
         }*/
     }
