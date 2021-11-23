@@ -70,9 +70,9 @@ public class GameScreen implements Screen {
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
-        board =new int[size][size];
-        pieces = new int[size][size];
+        camera.setToOrtho(false, 480, 480);
+        board =new int[16][16];
+        pieces = new int[16][16];
         generateMineLocation();
         addBombs();
         for(int r=0;r<board.length;r++)	
@@ -92,9 +92,9 @@ public class GameScreen implements Screen {
    
     public void addBombs() {
     int temp = 0;
-        board = new int[size][size];
-     for(int r = 0; r < size; r++) {
-         for(int c = 0; c < size; c++) {
+        board = new int[16][16];
+     for(int r = 0; r < 16; r++) {
+         for(int c = 0; c < 16; c++) {
             if(mineLocation.contains(temp)){
                 board[r][c]=-1;
              }
@@ -273,22 +273,18 @@ public class GameScreen implements Screen {
      
      }
      public void floodFill(int r, int c){
-        if(board[r][c]==0 && r!=0 && r!= board.length-1 && c!=0 && c!=board[0].length-1 && pieces[r][c]!=1){
-        pieces[r][c]=1;        
-        if(board[r][c+1]==0){
-            floodFill(r,c+1);
-        }
-         floodFill(r,c+1);
+      int[][] vis = new int[16][16]; 
+      if (r < 0 || r >= pieces.length || c < 0 || c >= pieces[0].length)
+         return;
+      if(board[r][c]==-1 || vis[r][c]==1)
+         return;
+      vis[r][c]=1;
+      pieces[r][c]=-1;
+      floodFill(r,c+1);
          floodFill(r+1, c);
          floodFill(r-1,c);
          floodFill(r,c-1);
-        
-        }
-         else{
-         return;
-         }
-        return;
-        
+     
          }
       
   
@@ -363,8 +359,8 @@ public class GameScreen implements Screen {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            int x = (int) (touchPos.x / size);
-            int y = (int) (touchPos.y / size);
+            int x = (int)(touchPos.x / size)-1;
+            int y = (int)(touchPos.y / size)-1;
             if(pieces[x][y]==0){
                 if(board[x][y]==-1){
                     game.setScreen(new GameOverScreen(game));
@@ -392,6 +388,7 @@ public class GameScreen implements Screen {
         // value our drops counter and add a sound effect.
        
     }
+    
 
     @Override
     public void resize(int width, int height) {
