@@ -9,6 +9,6 @@ public class DesktopLauncher {
         config.title = "Pastimer";
         config.width = 1920;
         config.height = 1080;
-        new LwjglApplication(new Pastimer(), config);
+        new LwjglApplication(new WelcomeScreen(), config);
     }
 }
