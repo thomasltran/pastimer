@@ -24,6 +24,7 @@ Environment installation and setup:
   - [YT Playlist - follow along tutorials](https://www.youtube.com/playlist?list=PLS9MbmO_ssyCZ9Tjfay2tOQoaOVoG59Iy)
   - [Light Overviews](https://libgdx.info/get-yourself-setup/)
   - [Skin](https://github.com/czyzby/gdx-skins)
+  - [Git commands](https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html)
  
 ## Planning
 ### Features
