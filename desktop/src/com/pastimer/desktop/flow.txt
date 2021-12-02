@@ -1,0 +1,6 @@
+open up the application
+pastimer appears on the screen (but looks cool how the letters appear) - WelcomeScreen.java
+goes straight into the timer - Timer.java
+after timer ends, mini-game menu pops up (3x3) - each game has a separate screen
+
+Pastimer -> WelcomeScreen -> TimerScreen
