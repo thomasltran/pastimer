@@ -5,6 +5,7 @@ import com.rafaskoberg.gdx.typinglabel.effects.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.graphics.Color;
 
@@ -28,6 +29,10 @@ public class WelcomeScreen extends ApplicationAdapter {
         TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.15}pastimer", skin, "title");//need to add in a delay
         text.setPosition(Gdx.graphics.getWidth()/2-133, Gdx.graphics.getHeight()/2);
         stage.addActor(text);
+        Texture texture = new Texture(Gdx.files.internal("peachLogo.png"));
+        Image image = new Image(texture);
+        image.setPosition(Gdx.graphics.getWidth()/2-133, Gdx.graphics.getHeight()/2+30);
+        stage.addActor(image);
         Gdx.input.setInputProcessor(stage); //handles mouse/keyboard
     }
     @Override
