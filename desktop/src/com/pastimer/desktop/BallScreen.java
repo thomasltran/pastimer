@@ -38,6 +38,8 @@ public class BallScreen implements Screen {
     int[][] boxes;
     int xChange;
     double angle = 270;
+    int yVel = 1;
+    int xVel = 1;
     int length = Display.getWidth();
     int height = Display.getHeight();
 
@@ -45,13 +47,14 @@ public class BallScreen implements Screen {
         this.game = game;
 
         // load the images for the droplet and the bucket, 64x64 pixels each
-        dropImage = new Texture(Gdx.files.internal("droplet.png"));
-        bucketImage = new Texture(Gdx.files.internal("bucket.png"));
+        dropImage = new Texture(Gdx.files.internal("peachLogo.png"));
+        bucketImage = new Texture(Gdx.files.internal("peachLogo.png"));
+        
 
         // load the drop sound effect and the rain background "music"
-        dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
-        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
-        rainMusic.setLooping(true);
+        //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
+        //rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
+       // rainMusic.setLooping(true);
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
@@ -105,13 +108,13 @@ public class BallScreen implements Screen {
 
         
 
-
+        
         for (int i = 0; i < 5; i++){
             for (int j = 0; j < 10; j++){
                 if (length/10*j + 15 > ball.x && ball.x > length/10*j - 15 && height/2+height/10*(i)+15 > ball.y && ball.y > height/2+height/10*(i) -15)
                     boxes[i][j]++;
                 if (boxes[i][j] == 0){
-                    game.batch.draw(bucketImage, length/10*j, height/2+height/10*(i));
+                    game.batch.draw(bucketImage, length/10*j, height/2+height/10*(i), length/10, height/10);
                 }
             
             }
@@ -133,10 +136,14 @@ public class BallScreen implements Screen {
 
         if (platform.x > 800 - 100)
             platform.x = 800 - 100;
-
+        if (platform.y < 0 + platform.height)
+            platform.y = 0 + platform.height;
+        if (platform.y > 480)
+            platform.y = 480;
         collide();
         ball.x += 5 * Math.cos(Math.toRadians(angle));
         ball.y += 5 * Math.sin(Math.toRadians(angle));
+        
         /*
         game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
         game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
@@ -185,12 +192,16 @@ public class BallScreen implements Screen {
     }
 
     public boolean collide(){
+
+
+
         for (int i = 0; i < boxes.length; i++){
            for (int j = 0; j < boxes[0].length; j++){
               int size = length/20;
               if (boxes[i][j] == 0 && distance(j*length/10+size, height/2 + (i)*height/10+size, (int)(ball.x+ball.height/2), (int) (ball.y+ball.height/2)) < size+5){
                  boxes[i][j]++;
                  calcAng(j*length/10, height/2 + (i)*height/10+size, size);
+                 
                  //angle = 270;
                  return true;
               }
@@ -198,29 +209,37 @@ public class BallScreen implements Screen {
            }
         }
            for (int i = 0; i < platform.x; i++){
-              if (distance((int) (platform.x+i), (int) platform.y, (int) ball.x, (int) ball.y) < 15){
+              if (distance((int) (platform.x+i), (int) platform.y, (int) ball.x, (int) ball.y) < 5){
                  calcAng();
                  //angle = 90;
+                 
                  return true;
               }
            }
         if (ball.getX() < 0 || ball.getX() > length ){
            angle = Math.abs(180 - angle);
+          
         }
         if (ball.getY() < 0 || ball.getY() > height){
            angle = Math.abs(360 - angle);
+           
         }
         return false;
      }
 
      public void calcAng(){
+       
         double midx = (double)(platform.x+platform.width/2 - ball.x)/(double)(platform.width/2);
         double bounce = midx * 7*Math.PI/12;
         angle =  bounce*180/Math.PI;
+        if (Math.cos(angle) < 0)
+            angle = 180*(Math.PI/4*(ball.x - (platform.x-platform.width))/platform.width-Math.PI/8)/Math.PI;
+        else
+            angle = 180 - 180*(Math.PI/4*(ball.x - (platform.x-platform.width))/platform.width-Math.PI/8)/Math.PI;
      }
 
      public void calcAng(int x, int y, int size){
-        if (ball.y > y-2)
+        if (ball.y  == y)
            angle = 360 - angle;
         else
            angle = 180-angle;
@@ -241,7 +260,7 @@ public class BallScreen implements Screen {
     public void show() {
         // start the playback of the background music
         // when the screen is shown
-        rainMusic.play();
+        //rainMusic.play();
     }
 
     @Override

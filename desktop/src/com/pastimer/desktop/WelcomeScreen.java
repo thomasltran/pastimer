@@ -1,7 +1,7 @@
 package com.pastimer.desktop;
 
-import com.rafaskoberg.gdx.typinglabel.utils.*;
-import com.rafaskoberg.gdx.typinglabel.effects.*;
+//import com.rafaskoberg.gdx.typinglabel.utils.*;
+//import com.rafaskoberg.gdx.typinglabel.effects.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.rafaskoberg.gdx.typinglabel.*;
+//import com.rafaskoberg.gdx.typinglabel.*;
 
 public class WelcomeScreen extends ApplicationAdapter {
 
@@ -26,9 +26,9 @@ public class WelcomeScreen extends ApplicationAdapter {
     public void create(){
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("test1.json"));
-        TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.15}pastimer", skin, "title");//need to add in a delay
-        text.setPosition(Gdx.graphics.getWidth()/2-133, Gdx.graphics.getHeight()/2);
-        stage.addActor(text);
+        //TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.15}pastimer", skin, "title");//need to add in a delay
+        //text.setPosition(Gdx.graphics.getWidth()/2-133, Gdx.graphics.getHeight()/2);
+        //stage.addActor(text);
         Texture texture = new Texture(Gdx.files.internal("peachLogo.png"));
         Image image = new Image(texture);
         image.setPosition(Gdx.graphics.getWidth()/2-133, Gdx.graphics.getHeight()/2+30);
