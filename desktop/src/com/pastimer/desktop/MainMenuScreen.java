@@ -35,6 +35,7 @@ public class MainMenuScreen implements Screen {
             game.setScreen(new GameScreen(game));
             dispose();
         }
+        
        
     }
 

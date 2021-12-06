@@ -310,34 +310,34 @@ public class GameScreen implements Screen {
         for(int i=0;i<board.length;i++){
             for(int j=0;j<board[0].length;j++){
                 if(board[i][j]==-1){
-                    game.batch.draw(bomb, j*(size), i*(size), size, size);
+                    game.batch.draw(bomb, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==0){
-                    game.batch.draw(zero, j*(size), i*(size), size, size);
+                    game.batch.draw(zero, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==1){
-                    game.batch.draw(one, j*(size), i*(size), size, size);
+                    game.batch.draw(one, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==2){
-                    game.batch.draw(two, j*(size), i*(size), size, size);
+                    game.batch.draw(two, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==3){
-                    game.batch.draw(three, j*(size), i*(size), size, size);
+                    game.batch.draw(three, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==4){
-                    game.batch.draw(four, j*(size), i*(size), size, size);
+                    game.batch.draw(four, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==5){
-                    game.batch.draw(five, j*(size), i*(size), size, size);
+                    game.batch.draw(five, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==6){
-                    game.batch.draw(six, j*(size), i*(size), size, size);
+                    game.batch.draw(six, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==7){
-                    game.batch.draw(seven, j*(size), i*(size), size, size);
+                    game.batch.draw(seven, j*(size), 450 -i*(size), size, size);
                 }
                 else if(board[i][j]==8){
-                    game.batch.draw(eight, j*(size), i*(size), size, size);
+                    game.batch.draw(eight, j*(size), 450 -i*(size), size, size);
                 }
             }
         }
@@ -349,46 +349,28 @@ public class GameScreen implements Screen {
             else if(pieces[i][j]==1){
                 game.batch.draw(flag, j*(size), i*(size), size, size);
                 }
-            }}
+            }} 
        
         
-        game.batch.end();
+       
 
         // process user input
         if (Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            int x = (int)(touchPos.x / size)-1;
-            int y = (int)(touchPos.y / size)-1;
-            if(pieces[x][y]==0){
-                if(board[x][y]==-1){
-                    game.setScreen(new GameOverScreen(game));
-                }
-                else{
-                    pieces[x][y]=1;
-                    if(board[x][y]==0){
-                        floodFill(x,y);
-                    }
-                }
-            }
-            else if(pieces[x][y]==1){
-                pieces[x][y]=0;
-            }
-        }
-        
+            int x = (int)(touchPos.x / size);
+            int y = (int)((480-touchPos.y)/size);
+            String strX = String.valueOf(x);
+            String strY = String.valueOf(y);
 
-        // make sure the bucket stays within the screen bounds
-       
-        // check if we need to create a new raindrop
-        
-
-        // move the raindrops, remove any that are beneath the bottom edge of
-        // the screen or that hit the bucket. In the later case we increase the
-        // value our drops counter and add a sound effect.
-       
+            game.font.draw(game.batch, "I clicked " + strX + " and "+ strY, 240, 240);
     }
-    
+ 
+
+   game.batch.end();
+   }
+
 
     @Override
     public void resize(int width, int height) {
