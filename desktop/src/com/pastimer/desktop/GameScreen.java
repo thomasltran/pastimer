@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Input;
 
 import java.util.*;
 
@@ -279,12 +280,19 @@ public class GameScreen implements Screen {
       if(board[r][c]==-1 || vis[r][c]==1)
          return;
       vis[r][c]=1;
-      pieces[r][c]=-1;
+      pieces[r][c]=3;
       floodFill(r,c+1);
          floodFill(r+1, c);
          floodFill(r-1,c);
          floodFill(r,c-1);
      
+         }
+         public boolean isBomb( int x, int y){
+            if(board[x][y]==-1){
+                  return true;
+               }
+            return false;
+         
          }
       
   
@@ -310,34 +318,34 @@ public class GameScreen implements Screen {
         for(int i=0;i<board.length;i++){
             for(int j=0;j<board[0].length;j++){
                 if(board[i][j]==-1){
-                    game.batch.draw(bomb, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(bomb, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==0){
-                    game.batch.draw(zero, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(zero, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==1){
-                    game.batch.draw(one, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(one, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==2){
-                    game.batch.draw(two, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(two, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==3){
-                    game.batch.draw(three, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(three, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==4){
-                    game.batch.draw(four, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(four, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==5){
-                    game.batch.draw(five, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(five, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==6){
-                    game.batch.draw(six, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(six, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==7){
-                    game.batch.draw(seven, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(seven, i*(size), j*(size), size, size);
                 }
                 else if(board[i][j]==8){
-                    game.batch.draw(eight, j*(size), 450 -i*(size), size, size);
+                    game.batch.draw(eight, i*(size), j*(size), size, size);
                 }
             }
         }
@@ -355,21 +363,53 @@ public class GameScreen implements Screen {
        
 
         // process user input
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            int x = (int)(touchPos.x / size);
-            int y = (int)((480-touchPos.y)/size);
+            int y = (int)(touchPos.x / size);
+            int x = (int)((touchPos.y)/size);
             String strX = String.valueOf(x);
             String strY = String.valueOf(y);
+            if(isBomb(y, x) && pieces[x][y]!=1){
+               for(int i =0; i<pieces.length; i++){
+                  for(int g =0; g<pieces[0].length;g++){
+                     pieces[i][g]=3;
+                  }
+               }
+            }
+            else if(pieces[x][y]!=1){
+               pieces[x][y]=3;
+           
+            
+            }
 
             game.font.draw(game.batch, "I clicked " + strX + " and "+ strY, 240, 240);
-    }
- 
+         }
+    if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+      Vector3 touchPos = new Vector3();
+      touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+      camera.unproject(touchPos);
+      int x = (int)(touchPos.x / size);
+      int y = (int)((touchPos.y)/size);
+      String strX = String.valueOf(x);
+      String strY = String.valueOf(y);
+      if(pieces[y][x]==0){
+         pieces[y][x]=1;
+      }
+      else if(pieces[y][x]==1){
+         pieces[y][x]=0;
+      
+      }
+
+      game.font.draw(game.batch, "I clicked " + strX + " and "+ strY, 240, 240);
+}
+
 
    game.batch.end();
    }
+
+
 
 
     @Override
