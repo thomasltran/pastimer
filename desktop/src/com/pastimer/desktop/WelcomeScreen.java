@@ -26,7 +26,7 @@ public class WelcomeScreen extends ApplicationAdapter {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("test1.json"));
-        this.setUp();        
+        this.setup();        
     }
     @Override
     public void render(){
@@ -41,21 +41,14 @@ public class WelcomeScreen extends ApplicationAdapter {
         stage.dispose();
     }
 
-    public void setUp(){
-        TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.15}pastimer", skin, "title");
+    public void setup(){
+        TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.125}pastimer", skin, "title");
         Texture texture = new Texture(Gdx.files.internal("peachLogo.png"));
         Image image = new Image(texture);
-        MoveToAction position = new MoveToAction();
-
-        text.setPosition(Gdx.graphics.getWidth()/2-133-10, Gdx.graphics.getHeight()/2);
-        image.setPosition(Gdx.graphics.getWidth()/2+133, Gdx.graphics.getHeight()/2);
-        image.setSize(image.getWidth()/3, image.getHeight()/3);
-
-        position.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        position.setDuration(5);
-
-        text.addAction(position);
-
+        text.setPosition(Gdx.graphics.getWidth()/2-133, Gdx.graphics.getHeight()/2);
+        image.setPosition(Gdx.graphics.getWidth()/2+133+10, Gdx.graphics.getHeight()/2-7);
+        image.setSize(image.getWidth()/2.2f, image.getHeight()/2.2f);
+        image.addAction(Actions.sequence(Actions.fadeOut(0), Actions.fadeOut(2.5f), Actions.fadeIn(2)));
         stage.addActor(text);
         stage.addActor(image);
     }
