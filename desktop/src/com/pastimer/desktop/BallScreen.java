@@ -74,7 +74,7 @@ public class BallScreen implements Screen {
 */
         boxes = new int [5][10];
         ball = new Rectangle(400, 150, 30, 30);
-        platform = new Rectangle(Display.getWidth()/2, 50, 200, 20);
+        platform = new Rectangle(Display.getWidth()/2-100, 50, 200, 20);
     }
 
     private void spawnRaindrop() {
@@ -136,10 +136,16 @@ public class BallScreen implements Screen {
 
         if (platform.x > 800 - 100)
             platform.x = 800 - 100;
-        if (platform.y < 0 + platform.height)
-            platform.y = 0 + platform.height;
-        if (platform.y > 480)
-            platform.y = 480;
+        /*
+        if (ball.x < 0)
+            ball.x = 0;
+        if (ball.x > 800-ball.height)
+            ball.x = 800-ball.height;
+        if (ball.y < 0 + ball.height)
+            ball.y = 0 + ball.height;
+        if (ball.y > 480-ball.height)
+            ball.y = 480-ball.height;
+            */
         collide();
         ball.x += 5 * Math.cos(Math.toRadians(angle));
         ball.y += 5 * Math.sin(Math.toRadians(angle));
@@ -224,6 +230,7 @@ public class BallScreen implements Screen {
            angle = Math.abs(360 - angle);
            
         }
+        
         return false;
      }
 
@@ -235,7 +242,7 @@ public class BallScreen implements Screen {
         if (Math.cos(angle) < 0)
             angle = 180*(Math.PI/4*(ball.x - (platform.x-platform.width))/platform.width-Math.PI/8)/Math.PI;
         else
-            angle = 180 - 180*(Math.PI/4*(ball.x - (platform.x-platform.width))/platform.width-Math.PI/8)/Math.PI;
+            angle =  - 180*(Math.PI/4*(ball.x - (platform.x-platform.width))/platform.width-Math.PI/8)/Math.PI;
      }
 
      public void calcAng(int x, int y, int size){

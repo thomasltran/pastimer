@@ -30,7 +30,7 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new BallScreen(game));
+            game.setScreen(new FrogScreen(game));
             dispose();
         }
     }
