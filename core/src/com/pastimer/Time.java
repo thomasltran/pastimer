@@ -1,4 +1,4 @@
-package com.pastimer.desktop;
+package com.pastimer;
 
 public class Time {
     private int hour;
