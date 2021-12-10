@@ -3,10 +3,10 @@ package com.pastimer.desktop;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -34,6 +34,7 @@ public class GameScreen implements Screen {
     Texture flag;
     Texture starting;
     Texture bomb;
+    Texture flagIcon;
     Set<Integer> mineLocation;
     Sound dropSound;
     Music rainMusic;
@@ -43,6 +44,7 @@ public class GameScreen implements Screen {
     int bombCount;
     int[][] board, pieces;
     int size = 30;
+    int flags;
     
 
     public GameScreen(final Minesweeper game) {
@@ -60,8 +62,10 @@ public class GameScreen implements Screen {
         seven = new Texture(Gdx.files.internal("7.png"));
         eight = new Texture(Gdx.files.internal("8.png"));
         flag = new Texture(Gdx.files.internal("flagged.png"));
+        flagIcon = new Texture(Gdx.files.internal("flagIcon.png"));
         starting = new Texture(Gdx.files.internal("facingDown.png"));
         bomb = new Texture(Gdx.files.internal("bomb.png"));
+        flags = 40;
 
 
         // load the drop sound effect and the rain background "music"
@@ -71,7 +75,7 @@ public class GameScreen implements Screen {
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 480, 480);
+        camera.setToOrtho(false, 480, 530);
         board =new int[16][16];
         pieces = new int[16][16];
         generateMineLocation();
@@ -273,23 +277,28 @@ public class GameScreen implements Screen {
         return bombCount;
      
      }
-     public void floodFill(int r, int c){
-      int[][] vis = new int[16][16]; 
-      if (r < 0 || r >= pieces.length || c < 0 || c >= pieces[0].length)
+     /*public void flood(int r, int c){
+      if(board[r][c]==0 && r>=0 && r< board.length && c>=0 && c<board[0].length && pieces[r][c]!=1){
+         pieces[r][c]=1;
+         if(c!=15)
+            flood(r,c+1);
+         if(r!=15)   
+            flood(r+1, c);
+         if(r!=0)
+            flood(r-1,c);
+         if(c!=0)   
+            flood(r,c-1);
+      }
+      else{
          return;
-      if(board[r][c]==-1 || vis[r][c]==1)
-         return;
-      vis[r][c]=1;
-      pieces[r][c]=3;
-      floodFill(r,c+1);
-         floodFill(r+1, c);
-         floodFill(r-1,c);
-         floodFill(r,c-1);
-     
-         }
-         public boolean isBomb( int x, int y){
-            if(board[x][y]==-1){
-                  return true;
+      }
+      return;
+   
+   } */
+
+      public boolean isBomb( int x, int y){
+         if(board[x][y]==-1){
+               return true;
                }
             return false;
          
@@ -303,7 +312,7 @@ public class GameScreen implements Screen {
         // arguments to clear are the red, green
         // blue and alpha component in the range [0,1]
         // of the color to be used to clear the screen.
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(Color.DARK_GRAY);
 
         // tell the camera to update its matrices.
         camera.update();
@@ -315,6 +324,7 @@ public class GameScreen implements Screen {
         // begin a new batch and draw the bucket and
         // all drops
         game.batch.begin();
+        
         for(int i=0;i<board.length;i++){
             for(int j=0;j<board[0].length;j++){
                 if(board[i][j]==-1){
@@ -358,6 +368,9 @@ public class GameScreen implements Screen {
                 game.batch.draw(flag, j*(size), i*(size), size, size);
                 }
             }} 
+            String flagCounter = String.valueOf(flags);
+         game.batch.draw(flagIcon, 170, 450, 100,100);
+         game.font.draw(game.batch, flagCounter, 230, 515);
        
         
        
@@ -377,6 +390,7 @@ public class GameScreen implements Screen {
                      pieces[i][g]=3;
                   }
                }
+               game.font.draw(game.batch, "THE PEACHES WIN AGAIN!!!! :)", 190, 515);
             }
             else if(pieces[x][y]!=1){
                pieces[x][y]=3;
@@ -396,13 +410,16 @@ public class GameScreen implements Screen {
       String strY = String.valueOf(y);
       if(pieces[y][x]==0){
          pieces[y][x]=1;
+         flags--;
       }
       else if(pieces[y][x]==1){
          pieces[y][x]=0;
+         flags++;
       
       }
 
       game.font.draw(game.batch, "I clicked " + strX + " and "+ strY, 240, 240);
+      
 }
 
 
