@@ -25,11 +25,15 @@ public class TimerScreen implements Screen {
     @Override
     public void show(){
         Gdx.input.setInputProcessor(stage);
+        int num = 25;
+         Label time = new Label(String.valueOf(num), Pastimer.skin, "time");
+        time.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        stage.addActor(time);
     }
 
     @Override
     public void render(float delta){
-        Gdx.gl.glClearColor(250/255.0f, 133/255.0f, 133/255.0f, 1);
+        Gdx.gl.glClearColor(220/255.0f, 133/255.0f, 133/255.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
