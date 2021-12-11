@@ -16,20 +16,27 @@ public class TimerScreen implements Screen {
 
     private Stage stage;
     private Game game;
+    private Time timer;
+    private Label display;
+    private long currTime;
 
     public TimerScreen(Game game){
         this.game = game;
         stage = new Stage(new ScreenViewport());
+        timer = new Time();
     }
 
     @Override
     public void show(){
         Gdx.input.setInputProcessor(stage);
-        int num = 25;
-         Label time = new Label(String.valueOf(num), Pastimer.skin, "time");
-        time.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        stage.addActor(time);
+        display = new Label(timer.getString(timer.getHour())+":"
+                                +timer.getString(timer.getMinute())+":"
+                                +timer.getString(timer.getSecond()), Pastimer.skin, "time");
+        System.out.println(display.getWidth()+" "+display.getHeight());
+        display.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-72);
+        stage.addActor(display);
     }
+    //466 144
 
     @Override
     public void render(float delta){
@@ -37,6 +44,10 @@ public class TimerScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+        display.setText(timer.getString(timer.getHour())+":"
+                +timer.getString(timer.getMinute())+":"
+                +timer.getString(timer.getSecond()));
+        timer.subtract();
     }
 
     @Override

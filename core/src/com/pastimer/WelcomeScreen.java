@@ -53,7 +53,7 @@ public class WelcomeScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
-        if(TimeUtils.nanosToMillis(delayTime) + 6000 < TimeUtils.nanosToMillis(TimeUtils.nanoTime()))
+        if(TimeUtils.nanosToMillis(delayTime) + 6500 < TimeUtils.nanosToMillis(TimeUtils.nanoTime()))
             game.setScreen(new TimerScreen(game));
     }
 
@@ -83,7 +83,7 @@ public class WelcomeScreen implements Screen {
     }
 
     public void setup(){
-        TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.125}pastimer", Pastimer.skin, "title");
+        TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.10}pastimer", Pastimer.skin, "title");
         //266 79
         //216 219
         Texture texture = new Texture(Gdx.files.internal("peachLogo.png"));
@@ -93,7 +93,7 @@ public class WelcomeScreen implements Screen {
         text.setPosition(Gdx.graphics.getWidth()/2-133, Gdx.graphics.getHeight()/2);
         image.setPosition(Gdx.graphics.getWidth()/2+143, Gdx.graphics.getHeight()/2-7);
         image.setSize(image.getWidth()/2.2f, image.getHeight()/2.2f);
-        image.addAction(Actions.sequence(Actions.fadeOut(0), Actions.fadeOut(2.5f), Actions.fadeIn(2)));
+        image.addAction(Actions.sequence(Actions.fadeOut(0), Actions.fadeOut(3.2f), Actions.fadeIn(2f)));
         stage.addActor(text);
         stage.addActor(image);
     }
