@@ -312,7 +312,7 @@ public class GameScreen implements Screen {
         // arguments to clear are the red, green
         // blue and alpha component in the range [0,1]
         // of the color to be used to clear the screen.
-        ScreenUtils.clear(Color.DARK_GRAY);
+        ScreenUtils.clear(Color.PINK);
 
         // tell the camera to update its matrices.
         camera.update();
