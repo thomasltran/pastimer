@@ -36,7 +36,7 @@ Environment installation and setup:
 ### Minigames (3 per person)
   - Pierre (Minesweeper, Flappy Bird)
   - Thomas (TypeRacer, Space Invaders type thing, Snowboarding)
-  - Ja-Zhua (Ball)
+  - Ja-Zhua (Ball, Frogger)
  ### APIs
   - Spotify
   - Weather
