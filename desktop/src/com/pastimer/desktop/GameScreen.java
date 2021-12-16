@@ -277,9 +277,9 @@ public class GameScreen implements Screen {
         return bombCount;
      
      }
-     /*public void flood(int r, int c){
+        public void flood(int r, int c){
       if(board[r][c]==0 && r>=0 && r< board.length && c>=0 && c<board[0].length && pieces[r][c]!=1){
-         pieces[r][c]=1;
+         pieces[r][c]=4;
          if(c!=15)
             flood(r,c+1);
          if(r!=15)   
@@ -294,7 +294,7 @@ public class GameScreen implements Screen {
       }
       return;
    
-   } */
+   } 
 
       public boolean isBomb( int x, int y){
          if(board[x][y]==-1){
@@ -303,6 +303,24 @@ public class GameScreen implements Screen {
             return false;
          
          }
+   public boolean checkWin(){
+      int temp = 255;
+      for(int i = 0; i< board.length; i++){
+         for(int j = 0; j<board[0].length; j++){
+            if(pieces[i][j]!=1 || pieces[i][j]!=0){
+               temp--;
+            }
+         }
+      }
+      if(temp ==40){
+      return true;
+      }
+      return false;
+      }
+   
+   
+        
+      
       
   
 
@@ -312,7 +330,7 @@ public class GameScreen implements Screen {
         // arguments to clear are the red, green
         // blue and alpha component in the range [0,1]
         // of the color to be used to clear the screen.
-        ScreenUtils.clear(Color.PINK);
+        ScreenUtils.clear(185/255f, 185/255f, 185/255f, 1);
 
         // tell the camera to update its matrices.
         camera.update();
@@ -384,6 +402,7 @@ public class GameScreen implements Screen {
             int x = (int)((touchPos.y)/size);
             String strX = String.valueOf(x);
             String strY = String.valueOf(y);
+            if(y<=15 && y>=0 && x >=0 && x<=15){
             if(isBomb(y, x) && pieces[x][y]!=1){
                for(int i =0; i<pieces.length; i++){
                   for(int g =0; g<pieces[0].length;g++){
@@ -394,12 +413,15 @@ public class GameScreen implements Screen {
             }
             else if(pieces[x][y]!=1){
                pieces[x][y]=3;
-           
+             
             
             }
 
             game.font.draw(game.batch, "I clicked " + strX + " and "+ strY, 240, 240);
          }
+         else 
+         game.font.draw(game.batch, "I clicked " + strX + " and "+ strY, 240, 240);
+      }
     if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
       Vector3 touchPos = new Vector3();
       touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -408,6 +430,7 @@ public class GameScreen implements Screen {
       int y = (int)((touchPos.y)/size);
       String strX = String.valueOf(x);
       String strY = String.valueOf(y);
+      if(y<=15 && y>=0 && x >=0 && x<=15){
       if(pieces[y][x]==0){
          pieces[y][x]=1;
          flags--;
@@ -419,9 +442,12 @@ public class GameScreen implements Screen {
       }
 
       game.font.draw(game.batch, "I clicked " + strX + " and "+ strY, 240, 240);
-      
+   }    
 }
+if(checkWin()){
 
+   game.font.draw(game.batch, "You Win", 240, 240);
+}
 
    game.batch.end();
    }
