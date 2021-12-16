@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.rafaskoberg.gdx.typinglabel.*;
 
 public class TimerScreen implements Screen {
@@ -35,6 +36,7 @@ public class TimerScreen implements Screen {
         System.out.println(display.getWidth()+" "+display.getHeight());
         display.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-72);
         stage.addActor(display);
+        currTime = TimeUtils.nanoTime();
     }
     //466 144
 
@@ -47,7 +49,10 @@ public class TimerScreen implements Screen {
         display.setText(timer.getString(timer.getHour())+":"
                 +timer.getString(timer.getMinute())+":"
                 +timer.getString(timer.getSecond()));
-        timer.subtract();
+        if(TimeUtils.nanosToMillis(currTime) + 1000 < TimeUtils.nanosToMillis(TimeUtils.nanoTime())){
+            currTime = TimeUtils.nanoTime();
+            timer.subtract();
+        }
     }
 
     @Override
