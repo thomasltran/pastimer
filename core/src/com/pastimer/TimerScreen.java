@@ -1,8 +1,10 @@
 package com.pastimer;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -20,6 +22,9 @@ public class TimerScreen implements Screen {
     private Time timer;
     private Label display;
     private long currTime;
+    private Button add;
+    private Button subtract;
+    private TextButton welcomeScreen;
 
     public TimerScreen(Game game){
         this.game = game;
@@ -30,13 +35,27 @@ public class TimerScreen implements Screen {
     @Override
     public void show(){
         Gdx.input.setInputProcessor(stage);
+
         display = new Label(timer.getString(timer.getHour())+":"
                                 +timer.getString(timer.getMinute())+":"
                                 +timer.getString(timer.getSecond()), Pastimer.skin, "time");
         System.out.println(display.getWidth()+" "+display.getHeight());
         display.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-72);
         stage.addActor(display);
+
+        add = new Button(Pastimer.skin);
+        add.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-100);
+        stage.addActor(add);
+        subtract = new Button(Pastimer.skin);
+        subtract.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-150);
+        stage.addActor(subtract);
         currTime = TimeUtils.nanoTime();
+
+        //change to a screen example
+        welcomeScreen = new TextButton("Welcome", Pastimer.skin);
+        welcomeScreen.setPosition(10, 10);
+        stage.addActor(welcomeScreen);
+        //look at render section
     }
     //466 144
 
@@ -53,6 +72,16 @@ public class TimerScreen implements Screen {
             currTime = TimeUtils.nanoTime();
             timer.subtract();
         }
+        if(add.isPressed()){
+            timer.add();
+        }
+        if(subtract.isPressed()){
+            timer.subtract();
+        }
+        
+        //change to a screen example
+        if(welcomeScreen.isPressed())
+            game.setScreen(new WelcomeScreen(game));
     }
 
     @Override
