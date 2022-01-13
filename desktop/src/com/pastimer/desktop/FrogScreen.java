@@ -32,11 +32,15 @@ public class FrogScreen implements Screen {
     int[] direction;
     int frogX;
     int frogY;
+    int score;
+    int lives;
+
     int length = Display.getWidth();
     int height = Display.getHeight();
     InputProcessor input;
     boolean hit = false;
     float elapsed;
+
 
 
         public FrogScreen(final Drop game){
@@ -70,6 +74,8 @@ public class FrogScreen implements Screen {
         }
         frogX = 8;
         frogY = 0;
+        score = 0;
+        lives = 3;
         objects[frogX][frogY] = 1;
         
         
@@ -81,9 +87,9 @@ public class FrogScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        boolean hit = false;
-        game.font.draw(game.batch, length + " " + height , 0, 800);
-
+        hit = false;
+        game.font.draw(game.batch, "score: " + score , 0, 800);
+        game.font.draw(game.batch, "lives: " + lives , 400, 800);
         elapsed += delta; 
         if (elapsed > .3){
             elapsed = 0;
@@ -108,10 +114,16 @@ public class FrogScreen implements Screen {
             objects[frogX][frogY] = 0;
             if (frogY < 24)
                 frogY++;
-     
+            score++;
             objects[frogX][frogY] = 1;
         }
-        hit = collide();
+        if (hit){
+            lives--;
+            if (lives == 0){
+                game.font.draw(game.batch, " You lose", 240,400);
+            }
+            
+        }
         addCars();
         if (frogY == 12)
             moveUp();
@@ -140,18 +152,28 @@ public class FrogScreen implements Screen {
         for (int i = 0; i < objects[0].length; i++){
             if (direction[i] == 1){
                 for (int j = objects.length-1; j > 0; j--){
-                    if (objects[j][i] == 1){}
+                    if (objects[j][i] == 1){
+                        if (objects[j-1][i] == 2 || objects[j-1][i] == 3)
+                            hit = true;
+                    }
                     else if (objects[j-1][i] != 1)
                         objects[j][i] = objects[j-1][i];
+                    else 
+                        objects[j][i] = 0;
                         
                 }
                 objects[0][i] = 0;
             }
             else{
                 for (int j = 0; j < objects.length-1; j++){
-                    if (objects[j][i] == 1){}
+                    if (objects[j][i] == 1 ){
+                        if (objects[j+1][i] == 2 || objects[j+1][i] == 3)
+                            hit = true;
+                    }
                     else if (objects[j+1][i] != 1)
                         objects[j][i] = objects[j+1][i];
+                    else 
+                        objects[j][i] = 0;
                 }
                 objects[objects.length-1][i] = 0;
             }
@@ -184,11 +206,12 @@ public class FrogScreen implements Screen {
                 }
             }
             }
+            
         }
     }
 
     public void addLine(int line){
-        for (int i = 0; i < objects.length; i++){
+        for (int i = 0; i < objects.length-1; i++){
             
             if (Math.random() < .01){
                 objects[i][line] = 3;
@@ -200,7 +223,9 @@ public class FrogScreen implements Screen {
                 objects[i][line] = 2;
             else
                 objects[i][line] = 0;
+            
         }
+        
         
     }
 
@@ -209,9 +234,15 @@ public class FrogScreen implements Screen {
         for (int i = 0; i < objects.length; i++){
             for (int j = 0; j < objects[0].length-1 ; j++){
                 objects[i][j] = objects[i][j+1];
+                if (j != objects.length-1)
+                    direction[i] = direction[i+1];
             }
             addLine(objects[0].length-1);
         }
+        if (Math.random() <.5)
+            direction[objects.length-1] = 1;
+        else 
+            direction[objects.length-1] = -1;
         frogY--;
     }
     public boolean collide(){
