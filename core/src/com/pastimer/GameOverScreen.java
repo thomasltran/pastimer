@@ -1,4 +1,4 @@
-package com.pastimer.desktop;
+package com.pastimer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,15 +7,16 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.Texture;
 
 
-public class MainMenuScreen implements Screen {
+
+public class GameOverScreen implements Screen {
 
     final Minesweeper game;
     OrthographicCamera camera;
     private Texture start;
 
-    public MainMenuScreen(final Minesweeper gam) {
+    public GameOverScreen(final Minesweeper gam) {
         game = gam;
-        start = new Texture("start.png");
+       
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 500, 520);
     }
@@ -28,14 +29,14 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         
         game.batch.begin();
-        game.batch.draw(start, (500 - start.getWidth()) / 2, (520 - start.getHeight()) / 2);
+        game.font.draw(game.batch, "Click to go back to main menu", (500 - start.getWidth()) / 2, (520 - start.getHeight()) / 2-50);
+        game.font.draw(game.batch, "You Just Lost the game!! ",  (500 - start.getWidth()) / 2, (520 - start.getHeight()) / 2);
         game.batch.end();
 
+       
         if (Gdx.input.justTouched()) {
-            game.setScreen(new GameScreen(game));
-            dispose();
+            game.setScreen(new MineSweeperScreen(game));
         }
-        
        
     }
 

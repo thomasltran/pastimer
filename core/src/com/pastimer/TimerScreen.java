@@ -25,6 +25,7 @@ public class TimerScreen implements Screen {
     private Button add;
     private Button subtract;
     private TextButton welcomeScreen;
+    private TextButton mineSweeperScreen;
 
     public TimerScreen(Game game){
         this.game = game;
@@ -46,6 +47,11 @@ public class TimerScreen implements Screen {
         welcomeScreen.setPosition(10, 10);
         stage.addActor(welcomeScreen);
         //look at render section
+
+        mineSweeperScreen = new TextButton("Mine Sweeper", Pastimer.skin);
+        mineSweeperScreen.setPosition(10,40);
+        stage.addActor(mineSweeperScreen);
+
     }
     //466 144
 
@@ -72,6 +78,8 @@ public class TimerScreen implements Screen {
         //change to a screen example
         if(welcomeScreen.isPressed())
             game.setScreen(new WelcomeScreen(game));
+        if(mineSweeperScreen.isPressed())
+            game.setScreen(new MineSweeperScreen(new Minesweeper()));
     }
 
     @Override

@@ -13,7 +13,6 @@ public class DesktopLauncher {
   
     public static void main (String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-<<<<<<< HEAD
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         config.title = "Pastimer";
         config.width = screenDimension.width;
@@ -23,14 +22,5 @@ public class DesktopLauncher {
         config.y = 0;
         config.foregroundFPS = 60;
         new LwjglApplication(new Pastimer(), config);
-=======
-        config.title = "Minesweeper";
-        config.width = 500;
-        config.height = 520;
-        new LwjglApplication(new Minesweeper(), config); 
-     
-
-
->>>>>>> pierre1
     }
 }

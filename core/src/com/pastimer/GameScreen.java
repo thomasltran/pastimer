@@ -1,4 +1,4 @@
-package com.pastimer.desktop;
+package com.pastimer;
 
 
 
@@ -12,29 +12,32 @@ import com.badlogic.gdx.graphics.Texture;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.Input;
 
 import java.util.*;
 
 public class GameScreen implements Screen {
-    final Minesweeper game;
+    private Game game;
+    private Stage stage;
 
-   
-    Texture zero;
-    Texture one;
-    Texture two;
-    Texture three;
-    Texture four;
-    Texture five;
-    Texture six;
-    Texture seven;
-    Texture eight;
-    Texture flag;
-    Texture starting;
-    Texture bomb;
-    Texture flagIcon;
+    Image zero;
+    Image one;
+    Image two;
+    Image three;
+    Image four;
+    Image five;
+    Image six;
+    Image seven;
+    Image eight;
+    Image flag;
+    Image starting;
+    Image bomb;
+    Image flagIcon;
     Set<Integer> mineLocation;
     Sound dropSound;
     Music rainMusic;
@@ -47,24 +50,25 @@ public class GameScreen implements Screen {
     int flags;
     
 
-    public GameScreen(final Minesweeper game) {
+    public GameScreen(Game game) {
         this.game = game;
 
         // load the images for the droplet and the bucket, 64x64 pixels each
        
-        zero = new Texture(Gdx.files.internal("0.png"));
-        one = new Texture(Gdx.files.internal("1.png"));
-        two = new Texture(Gdx.files.internal("2.png"));
-        three = new Texture(Gdx.files.internal("3.png"));
-        four = new Texture(Gdx.files.internal("4.png"));
-        five = new Texture(Gdx.files.internal("5.png"));
-        six = new Texture(Gdx.files.internal("6.png"));
-        seven = new Texture(Gdx.files.internal("7.png"));
-        eight = new Texture(Gdx.files.internal("8.png"));
-        flag = new Texture(Gdx.files.internal("flagged.png"));
-        flagIcon = new Texture(Gdx.files.internal("flagIcon.png"));
-        starting = new Texture(Gdx.files.internal("facingDown.png"));
-        bomb = new Texture(Gdx.files.internal("bomb.png"));
+        zero = new Image(new Texture(Gdx.files.internal("0.png")));
+        one = new Image(new Texture(Gdx.files.internal("1.png")));
+        two = new Image(new Texture(Gdx.files.internal("2.png")));
+        three = new Image(new Texture(Gdx.files.internal("3.png")));
+        four = new Image(new Texture(Gdx.files.internal("4.png")));
+        five = new Image(new Texture(Gdx.files.internal("5.png")));
+        six = new Image(new Texture(Gdx.files.internal("6.png")));
+        seven = new Image(new Texture(Gdx.files.internal("7.png")));
+        eight = new Image(new Texture(Gdx.files.internal("8.png")));
+        flag = new Image(new Texture(Gdx.files.internal("flagged.png")));
+        flagIcon = new Image(new Texture(Gdx.files.internal("flagIcon.png")));
+        starting = new Image(new Texture(Gdx.files.internal("facingDown.png")));
+        bomb = new Image(new Texture(Gdx.files.internal("bomb.png")));
+
         flags = 40;
 
 
@@ -74,6 +78,9 @@ public class GameScreen implements Screen {
         rainMusic.setLooping(true);
 
         // create the camera and the SpriteBatch
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 480, 530);
         board =new int[16][16];
