@@ -36,20 +36,10 @@ public class TimerScreen implements Screen {
     public void show(){
         Gdx.input.setInputProcessor(stage);
 
-        display = new Label(timer.getString(timer.getHour())+":"
-                                +timer.getString(timer.getMinute())+":"
-                                +timer.getString(timer.getSecond()), Pastimer.skin, "time");
-        System.out.println(display.getWidth()+" "+display.getHeight());
-        display.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-72);
-        stage.addActor(display);
+        buildTimer();
+        buildButtons();
 
-        add = new Button(Pastimer.skin);
-        add.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-100);
-        stage.addActor(add);
-        subtract = new Button(Pastimer.skin);
-        subtract.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-150);
-        stage.addActor(subtract);
-        currTime = TimeUtils.nanoTime();
+
 
         //change to a screen example
         welcomeScreen = new TextButton("Welcome", Pastimer.skin);
@@ -78,7 +68,7 @@ public class TimerScreen implements Screen {
         if(subtract.isPressed()){
             timer.subtract();
         }
-        
+
         //change to a screen example
         if(welcomeScreen.isPressed())
             game.setScreen(new WelcomeScreen(game));
@@ -107,5 +97,24 @@ public class TimerScreen implements Screen {
     @Override
     public void dispose(){
         stage.dispose();
+    }
+
+    private void buildTimer(){
+        display = new Label(timer.getString(timer.getHour())+":"
+                                +timer.getString(timer.getMinute())+":"
+                                +timer.getString(timer.getSecond()), Pastimer.skin, "time");
+        System.out.println(display.getWidth()+" "+display.getHeight());
+        display.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-72);
+        stage.addActor(display);
+    }
+
+    private void buildButtons(){
+        add = new Button(Pastimer.skin);
+        add.setPosition(display.getX(), display.getY());
+        stage.addActor(add);
+        subtract = new Button(Pastimer.skin);
+        subtract.setPosition(display.getX()+display.getWidth(), display.getY()-100);
+        stage.addActor(subtract);
+        currTime = TimeUtils.nanoTime();
     }
 }
