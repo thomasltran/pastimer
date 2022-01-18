@@ -3,82 +3,76 @@ package com.pastimer;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.Input;
+
 
 import java.util.*;
 
 public class GameScreen implements Screen {
    private Game game;
-   private Stage stage;
 
-   Image zero;
-   Image one;
-   Image two;
-   Image three;
-   Image four;
-   Image five;
-   Image six;
-   Image seven;
-   Image eight;
-   Image flag;
-   Image starting;
-   Image bomb;
-   Image flagIcon;
-   Label tempLabel;
+   Texture zero;
+   Texture one;
+   Texture two;
+   Texture three;
+   Texture four;
+   Texture five;
+   Texture six;
+   Texture seven;
+   Texture eight;
+   Texture flag;
+   Texture starting;
+   Texture bomb;
+   Texture flagIcon;
    Set<Integer> mineLocation;
    OrthographicCamera camera;
+   Array<Rectangle> raindrops;
    long lastDropTime;
    int bombCount;
    int[][] board, pieces;
-   float size = 0.1f;
+   int size = 30;
    int flags;
+   SpriteBatch batch;
+   private static BitmapFont font;
 
    public GameScreen(Game game) {
       this.game = game;
 
-      zero = new Image(new Texture(Gdx.files.internal("0.png")));
-      one = new Image(new Texture(Gdx.files.internal("1.png")));
-      two = new Image(new Texture(Gdx.files.internal("2.png")));
-      three = new Image(new Texture(Gdx.files.internal("3.png")));
-      four = new Image(new Texture(Gdx.files.internal("4.png")));
-      five = new Image(new Texture(Gdx.files.internal("5.png")));
-      six = new Image(new Texture(Gdx.files.internal("6.png")));
-      seven = new Image(new Texture(Gdx.files.internal("7.png")));
-      eight = new Image(new Texture(Gdx.files.internal("8.png")));
-      flag = new Image(new Texture(Gdx.files.internal("flagged.png")));
-      flagIcon = new Image(new Texture(Gdx.files.internal("flagIcon.png")));
-      starting = new Image(new Texture(Gdx.files.internal("facingDown.png")));
-      bomb = new Image(new Texture(Gdx.files.internal("bomb.png")));
+      // load the images for the droplet and the bucket, 64x64 pixels each
 
-      zero.setScale(size, size);
-      one.setScale(size, size);
-      two.setScale(size, size);
-      three.setScale(size, size);
-      four.setScale(size, size);
-      five.setScale(size, size);
-      six.setScale(size, size);
-      seven.setScale(size, size);
-      eight.setScale(size, size);
-      flag.setScale(size, size);
-      flagIcon.setScale(100, 100);
-      starting.setScale(size, size);
-      bomb.setScale(size, size);
-
+      zero = new Texture(Gdx.files.internal("0.png"));
+      one = new Texture(Gdx.files.internal("1.png"));
+      two = new Texture(Gdx.files.internal("2.png"));
+      three = new Texture(Gdx.files.internal("3.png"));
+      four = new Texture(Gdx.files.internal("4.png"));
+      five = new Texture(Gdx.files.internal("5.png"));
+      six = new Texture(Gdx.files.internal("6.png"));
+      seven = new Texture(Gdx.files.internal("7.png"));
+      eight = new Texture(Gdx.files.internal("8.png"));
+      flag = new Texture(Gdx.files.internal("flagged.png"));
+      flagIcon = new Texture(Gdx.files.internal("flagIcon.png"));
+      starting = new Texture(Gdx.files.internal("facingDown.png"));
+      bomb = new Texture(Gdx.files.internal("bomb.png"));
       flags = 40;
 
+      // create the camera and the SpriteBatch
+      camera = new OrthographicCamera();
+      camera.setToOrtho(false, 480, 530);
+      batch = new SpriteBatch();
+      font = new BitmapFont();
       board = new int[16][16];
       pieces = new int[16][16];
-
       generateMineLocation();
       addBombs();
       for (int r = 0; r < board.length; r++) {
@@ -90,64 +84,6 @@ public class GameScreen implements Screen {
          }
       }
 
-      stage = new Stage(new ScreenViewport());
-   }
-      @Override
-      public void show(){
-         
-         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-               if (board[i][j] == -1) {
-                  bomb.setPosition(i* 16, j * 16);
-                  stage.addActor(bomb);
-               } else if (board[i][j] == 0) {
-                  zero.setPosition(i * 16, j * 16);
-                  stage.addActor(zero);
-               } else if (board[i][j] == 1) {
-                  one.setPosition(i * 16, j * 16);
-                  stage.addActor(one);
-               } else if (board[i][j] == 2) {
-                  two.setPosition(i * 16, j * 16);
-                  stage.addActor(two);
-               } else if (board[i][j] == 3) {
-                  three.setPosition(i * 16, j * 16);
-                  stage.addActor(three);
-               } else if (board[i][j] == 4) {
-                  four.setPosition(i * 16, j * 16);
-                  stage.addActor(four);
-               } else if (board[i][j] == 5) {
-                  five.setPosition(i * 16, j * 16);
-                  stage.addActor(five);
-               } else if (board[i][j] == 6) {
-                  six.setPosition(i * 16, j * 16);
-                  stage.addActor(six);
-               } else if (board[i][j] == 7) {
-                  seven.setPosition(i * 16, j * 16);
-                  stage.addActor(seven);
-               } else if (board[i][j] == 8) {
-                  eight.setPosition(i * 16, j * 16);
-                  stage.addActor(eight);
-               }
-            }
-         }
-         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-               if (pieces[i][j] == 0) {
-                  starting.setPosition(j * 16, i * 16);
-                  stage.addActor(starting);
-               } else if (pieces[i][j] == 1) {
-                  flag.setPosition(j * 16, i * 16);
-                  stage.addActor(flag);
-               }
-            }
-         }
-         String flagCounter = String.valueOf(flags);
-         flagIcon.setPosition(170, 450);
-         stage.addActor(flagIcon);
-         tempLabel = new Label(flagCounter, Pastimer.skin, "default");
-         tempLabel.setPosition(230, 515);
-         stage.addActor(tempLabel);
-      Gdx.input.setInputProcessor(stage);
    }
 
    public void addBombs() {
@@ -373,15 +309,63 @@ public class GameScreen implements Screen {
 
    @Override
    public void render(float delta) {
+      // clear the screen with a dark blue color. The
+      // arguments to clear are the red, green
+      // blue and alpha component in the range [0,1]
+      // of the color to be used to clear the screen.
+      ScreenUtils.clear(185 / 255f, 185 / 255f, 185 / 255f, 1);
 
-      Gdx.gl.glClearColor(185 / 255f, 185 / 255f, 185 / 255f, 1);
-      Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+      // tell the camera to update its matrices.
+      camera.update();
 
-      stage.act();
-      stage.draw();
+      // tell the SpriteBatch to render in the
+      // coordinate system specified by the camera.
+      batch.setProjectionMatrix(camera.combined);
+
+      // begin a new batch and draw the bucket and
+      // all drops
+      batch.begin();
+
+      for (int i = 0; i < board.length; i++) {
+         for (int j = 0; j < board[0].length; j++) {
+            if (board[i][j] == -1) {
+               batch.draw(bomb, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 0) {
+               batch.draw(zero, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 1) {
+               batch.draw(one, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 2) {
+               batch.draw(two, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 3) {
+               batch.draw(three, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 4) {
+               batch.draw(four, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 5) {
+               batch.draw(five, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 6) {
+               batch.draw(six, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 7) {
+               batch.draw(seven, i * (size), j * (size), size, size);
+            } else if (board[i][j] == 8) {
+               batch.draw(eight, i * (size), j * (size), size, size);
+            }
+         }
+      }
+      for (int i = 0; i < board.length; i++) {
+         for (int j = 0; j < board[0].length; j++) {
+            if (pieces[i][j] == 0) {
+               batch.draw(starting, j * (size), i * (size), size, size);
+            } else if (pieces[i][j] == 1) {
+               batch.draw(flag, j * (size), i * (size), size, size);
+            }
+         }
+      }
+      String flagCounter = String.valueOf(flags);
+      batch.draw(flagIcon, 170, 450, 100, 100);
+      GameScreen.font.draw(batch, flagCounter, 230, 515);
 
       // process user input
-    /* if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
          Vector3 touchPos = new Vector3();
          touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
          camera.unproject(touchPos);
@@ -396,20 +380,14 @@ public class GameScreen implements Screen {
                      pieces[i][g] = 3;
                   }
                }
-               tempLabel = new Label("THE PEACHES WIN AGAIN!!!! :)", Pastimer.skin, "default");
-               tempLabel.setPosition(190, 515);
-               stage.addActor(tempLabel);
+               GameScreen.font.draw(batch, "THE PEACHES WIN AGAIN!!!! :)", 190, 515);
             } else if (pieces[x][y] != 1) {
                pieces[x][y] = 3;
 
             }
-            tempLabel = new Label("I clicked " + strX + " and " + strY, Pastimer.skin, "default");
-            tempLabel.setPosition(240, 240);
-            stage.addActor(tempLabel);
+            GameScreen.font.draw(batch, "I clicked " + strX + " and " + strY, 240, 240);
          } else
-            tempLabel = new Label("I clicked " + strX + " and " + strY, Pastimer.skin, "default");
-            tempLabel.setPosition(240, 240);
-            stage.addActor(tempLabel);
+         GameScreen.font.draw(batch, "I clicked " + strX + " and " + strY, 240, 240);
       }
       if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
          Vector3 touchPos = new Vector3();
@@ -429,20 +407,23 @@ public class GameScreen implements Screen {
 
             }
 
-            tempLabel = new Label("I clicked " + strX + " and " + strY, Pastimer.skin, "default");
-            tempLabel.setPosition(240, 240);
-            stage.addActor(tempLabel);
+            GameScreen.font.draw(batch, "I clicked " + strX + " and " + strY, 240, 240);
          }
       }
       if (checkWin()) {
-         tempLabel = new Label("You Win", Pastimer.skin, "default");
-            tempLabel.setPosition(240, 240);
-            stage.addActor(tempLabel);
-      }*/
+
+         GameScreen.font.draw(batch, "You Win", 240, 240);
+      }
+
+      batch.end();
    }
 
    @Override
    public void resize(int width, int height) {
+   }
+
+   @Override
+   public void show() {
    }
 
    @Override
@@ -459,6 +440,18 @@ public class GameScreen implements Screen {
 
    @Override
    public void dispose() {
-      stage.dispose();
+      zero.dispose();
+      one.dispose();
+      two.dispose();
+      three.dispose();
+      four.dispose();
+      five.dispose();
+      six.dispose();
+      seven.dispose();
+      eight.dispose();
+      bomb.dispose();
+      flag.dispose();
+      starting.dispose();
+
    }
 }
