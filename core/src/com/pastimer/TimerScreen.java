@@ -79,7 +79,7 @@ public class TimerScreen implements Screen {
         if(welcomeScreen.isPressed())
             game.setScreen(new WelcomeScreen(game));
         if(mineSweeperScreen.isPressed())
-            game.setScreen(new MineSweeperScreen(new Minesweeper()));
+            game.setScreen(new GameScreen(game));
     }
 
     @Override
