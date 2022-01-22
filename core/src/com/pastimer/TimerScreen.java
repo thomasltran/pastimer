@@ -1,25 +1,22 @@
 package com.pastimer;
-
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Texture;
+//cursor set, time set
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
-public class TimerScreen implements Screen, InputProcessor {
+public class TimerScreen implements Screen {
 
     private Stage stage;
     private Game game;
@@ -48,6 +45,13 @@ public class TimerScreen implements Screen, InputProcessor {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        stage.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                if (!event.isHandled()) {
+                    stage.unfocusAll();
+                }
+            }
+        });
 
         buildTimer();
         buildButtons();
@@ -180,46 +184,5 @@ public class TimerScreen implements Screen, InputProcessor {
         subtract.setPosition(timeDisplay.getX() + 30, timeDisplay.getY() - 30);
         stage.addActor(subtract);
         currTime = TimeUtils.nanoTime();
-    }
-
-    @Override
-    public boolean keyDown(int var1) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int var1) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char var1) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int var1, int var2, int var3, int var4) {
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int var1, int var2, int var3, int var4) {
-        System.out.println("t");
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int var1, int var2, int var3) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int var1, int var2) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float var1, float var2) {
-        return false;
     }
 }
