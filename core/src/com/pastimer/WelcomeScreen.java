@@ -88,8 +88,6 @@ public class WelcomeScreen implements Screen {
         //216 219
         Texture texture = new Texture(Gdx.files.internal("peachLogo.png"));
         Image image = new Image(texture);
-        System.out.println(text.getWidth() + " " + text.getHeight());
-        System.out.println(texture.getWidth()+" "+texture.getHeight());
         text.setPosition(Gdx.graphics.getWidth()/2-189.5f, Gdx.graphics.getHeight()/2);
         image.setPosition(Gdx.graphics.getWidth()/2+189.5f+10, Gdx.graphics.getHeight()/2+5);
         image.setSize(image.getWidth()/2.2f, image.getHeight()/2.2f);

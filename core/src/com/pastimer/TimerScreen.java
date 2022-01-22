@@ -1,6 +1,9 @@
 package com.pastimer;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -15,8 +18,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
-import java.awt.*;
-
 public class TimerScreen implements Screen {
 
     private Stage stage;
@@ -29,10 +30,12 @@ public class TimerScreen implements Screen {
     private TextButton welcomeScreen;
     private TextButton mineSweeperScreen;
     private TextField toDoInput;
+    int count;
     public TimerScreen(Game game){
         this.game = game;
         stage = new Stage(new ScreenViewport());
         timer = new Time();
+        count = 0;
     }
 
     @Override
@@ -41,8 +44,6 @@ public class TimerScreen implements Screen {
 
         buildTimer();
         buildButtons();
-
-
 
         //change to a screen example
         welcomeScreen = new TextButton("Welcome", Pastimer.skin);
@@ -54,8 +55,10 @@ public class TimerScreen implements Screen {
         mineSweeperScreen.setPosition(10,40);
         stage.addActor(mineSweeperScreen);
 
-        toDoInput = new TextField("hello world", Pastimer.skin, "default");
-        toDoInput.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+        toDoInput = new TextField("hello world", Pastimer.skin);
+
+        toDoInput.setPosition(500, 500);
+        toDoInput.setSize(150, 150);
         stage.addActor(toDoInput);
     }
     //466 144
@@ -117,6 +120,17 @@ public class TimerScreen implements Screen {
                                 +timer.getString(timer.getMinute())+":"
                                 +timer.getString(timer.getSecond()), Pastimer.skin, "time");
         display.setPosition(Gdx.graphics.getWidth()/2-386, Gdx.graphics.getHeight()-239);
+        display.setTouchable(Touchable.enabled);
+        display.addListener(new InputListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                count++;
+                System.out.println("touch"+count);
+
+            }
+        });
         stage.addActor(display);
     }
 
