@@ -23,7 +23,7 @@ public class TimerScreen implements Screen {
     private Stage stage;
     private Game game;
     private Time timer;
-    private Label display;
+    private TextField display;
     private long currTime;
     private Button add;
     private Button subtract;
@@ -69,15 +69,16 @@ public class TimerScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
-        display.setText(timer.getString(timer.getHour())+":"
+        /*display.setText(timer.getString(timer.getHour())+":"
                 +timer.getString(timer.getMinute())+":"
-                +timer.getString(timer.getSecond()));
+                +timer.getString(timer.getSecond()));*/
         if(TimeUtils.nanosToMillis(currTime) + 1000 < TimeUtils.nanosToMillis(TimeUtils.nanoTime())){
             currTime = TimeUtils.nanoTime();
             timer.subtract();
         }
         if(add.isPressed()){
             timer.add();
+            stage.setKeyboardFocus(null);
         }
         if(subtract.isPressed()){
             timer.subtract();
@@ -116,11 +117,14 @@ public class TimerScreen implements Screen {
     }
 
     private void buildTimer(){
-        display = new Label(timer.getString(timer.getHour())+":"
+        display = new TextField(timer.getString(timer.getHour())+":"
                                 +timer.getString(timer.getMinute())+":"
                                 +timer.getString(timer.getSecond()), Pastimer.skin, "time");
+        display.setSize(800, 200);
         display.setPosition(Gdx.graphics.getWidth()/2-386, Gdx.graphics.getHeight()-239);
-        display.setTouchable(Touchable.enabled);
+        display.setFocusTraversal(true);
+        display.setAlignment(1);
+      /*  display.setTouchable(Touchable.enabled);
         display.addListener(new InputListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 return true;
@@ -130,7 +134,7 @@ public class TimerScreen implements Screen {
                 System.out.println("touch"+count);
 
             }
-        });
+        });*/
         stage.addActor(display);
     }
 

@@ -17,6 +17,12 @@
 	}
 },
 "com.badlogic.gdx.graphics.Color": {
+	"background": {
+		"r": 0.91764706,
+		"g": 0.6745098,
+		"b": 0.6745098,
+		"a": 1
+	},
 	"black": {
 		"r": 0,
 		"g": 0,
@@ -206,6 +212,10 @@
 	"radio-pressed-p": {
 		"name": "radio-pressed",
 		"color": "pressed"
+	},
+	"textfield-b": {
+		"name": "textfield",
+		"color": "background"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
@@ -368,6 +378,11 @@
 		"background": "textfield-c",
 		"cursor": "white",
 		"selection": "selection"
+	},
+	"time": {
+		"font": "opensans",
+		"fontColor": "white",
+		"background": "textfield-b"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle": {
