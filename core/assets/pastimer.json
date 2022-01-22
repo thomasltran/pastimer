@@ -382,7 +382,8 @@
 	"time": {
 		"font": "opensans",
 		"fontColor": "white",
-		"background": "textfield-b"
+		"background": "textfield-b",
+		"cursor": "white"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle": {
