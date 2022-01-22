@@ -1,15 +1,15 @@
 {
 "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+	"arista": {
+		"file": "pRFB5KOE6Rrxm_JMzrgyI2GY.ttf.fnt"
+	},
 	"button": {
 		"file": "font-button-export.fnt"
-	},
-	"fat": {
-		"file": "arista.fnt"
 	},
 	"font": {
 		"file": "font-export.fnt"
 	},
-	"number": {
+	"opensans": {
 		"file": "opensans.fnt"
 	},
 	"title": {
@@ -24,33 +24,21 @@
 		"a": 1
 	},
 	"color": {
-		"r": 1,
-		"g": 1,
-		"b": 1,
-		"a": 1
-	},
-	"gray": {
-		"r": 0.5,
-		"g": 0.5,
-		"b": 0.5,
-		"a": 1
-	},
-	"highlight": {
-		"r": 0.93333334,
-		"g": 0.4417778,
-		"b": 0.44313726,
+		"r": 0.9019608,
+		"g": 0.52156866,
+		"b": 0.52156866,
 		"a": 1
 	},
 	"pressed": {
-		"r": 0.8300001,
-		"g": 0.45096672,
-		"b": 0.45096672,
+		"r": 0.75686276,
+		"g": 0.43137255,
+		"b": 0.43137255,
 		"a": 1
 	},
 	"selection": {
-		"r": 0.22745098,
-		"g": 0.59607846,
-		"b": 0.85882354,
+		"r": 0.75686276,
+		"g": 0.43137255,
+		"b": 0.43137255,
 		"a": 1
 	},
 	"white": {
@@ -60,9 +48,9 @@
 		"a": 1
 	},
 	"window": {
-		"r": 0.76862746,
-		"g": 0.4509804,
-		"b": 0,
+		"r": 0.85882354,
+		"g": 0.6431373,
+		"b": 0.6431373,
 		"a": 1
 	}
 },
@@ -78,10 +66,6 @@
 	"button-pressed-c": {
 		"name": "button-pressed",
 		"color": "color"
-	},
-	"button-h": {
-		"name": "button",
-		"color": "highlight"
 	},
 	"checkbox-c": {
 		"name": "checkbox",
@@ -179,18 +163,6 @@
 		"name": "slider-vertical",
 		"color": "selection"
 	},
-	"select-box-pressed-h": {
-		"name": "select-box-pressed",
-		"color": "highlight"
-	},
-	"select-box-h": {
-		"name": "select-box",
-		"color": "highlight"
-	},
-	"slider-knob-h": {
-		"name": "slider-knob",
-		"color": "highlight"
-	},
 	"slider-horizontal-p": {
 		"name": "slider-horizontal",
 		"color": "pressed"
@@ -206,10 +178,6 @@
 	"button-close-p": {
 		"name": "button-close",
 		"color": "pressed"
-	},
-	"button-close-h": {
-		"name": "button-close",
-		"color": "highlight"
 	},
 	"button-close-s": {
 		"name": "button-close",
@@ -227,14 +195,6 @@
 		"name": "slider-fancy",
 		"color": "pressed"
 	},
-	"checkbox-h": {
-		"name": "checkbox",
-		"color": "highlight"
-	},
-	"checkbox-pressed-h": {
-		"name": "checkbox-pressed",
-		"color": "highlight"
-	},
 	"checkbox-p": {
 		"name": "checkbox",
 		"color": "pressed"
@@ -243,10 +203,6 @@
 		"name": "checkbox-pressed",
 		"color": "pressed"
 	},
-	"radio-pressed-h": {
-		"name": "radio-pressed",
-		"color": "highlight"
-	},
 	"radio-pressed-p": {
 		"name": "radio-pressed",
 		"color": "pressed"
@@ -254,14 +210,12 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
 	"default": {
-		"up": "button-h",
-		"down": "button-p",
-		"over": "button-h"
+		"up": "button-c",
+		"down": "button-p"
 	},
 	"close": {
 		"up": "button-close-c",
-		"down": "button-close-p",
-		"over": "button-close-h"
+		"down": "button-close-p"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
@@ -270,8 +224,7 @@
 		"checkboxOff": "checkbox-c",
 		"font": "button",
 		"fontColor": "color",
-		"downFontColor": "pressed",
-		"overFontColor": "highlight"
+		"downFontColor": "pressed"
 	},
 	"radio": {
 		"checkboxOn": "radio-pressed-c",
@@ -282,9 +235,8 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
 	"default": {
-		"up": "button-h",
-		"down": "button-p",
-		"over": "button-h"
+		"up": "button-c",
+		"down": "button-p"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
@@ -292,32 +244,24 @@
 		"font": "button",
 		"fontColor": "white",
 		"downFontColor": "white",
-		"overFontColor": "gray",
 		"up": "button-c",
-		"down": "button-p",
-		"over": "button-h"
+		"down": "button-p"
 	},
 	"check": {
 		"imageUp": "checkbox-c",
 		"imageDown": "checkbox-pressed-p",
-		"imageOver": "checkbox-h",
 		"imageChecked": "checkbox-pressed-c",
-		"imageCheckedOver": "checkbox-pressed-h",
 		"font": "button",
 		"fontColor": "color",
-		"downFontColor": "pressed",
-		"overFontColor": "highlight"
+		"downFontColor": "pressed"
 	},
 	"radio": {
 		"imageUp": "checkbox-c",
 		"imageDown": "radio-pressed-p",
-		"imageOver": "checkbox-h",
 		"imageChecked": "radio-pressed-c",
-		"imageCheckedOver": "radio-pressed-h",
 		"font": "button",
 		"fontColor": "color",
-		"downFontColor": "pressed",
-		"overFontColor": "highlight"
+		"downFontColor": "pressed"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
@@ -330,12 +274,14 @@
 		"fontColor": "color"
 	},
 	"title": {
-		"font": "fat",
+		"font": "title",
 		"fontColor": "color"
 	},
+	"welcome": {
+		"font": "arista"
+	},
 	"time": {
-		"font": "number",
-		"fontColor": "color"
+		"font": "opensans"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
@@ -378,28 +324,21 @@
 		"background": "select-box-c",
 		"scrollStyle": "default",
 		"listStyle": "default",
-		"backgroundOver": "select-box-h",
 		"backgroundOpen": "select-box-pressed-c"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle": {
 	"default-horizontal": {
-		"knobOver": "slider-knob-h",
-		"knobDown": "slider-knob-h",
 		"background": "slider-horizontal-p",
 		"knob": "slider-knob-c",
 		"knobBefore": "slider-horizontal-s"
 	},
 	"default-vertical": {
-		"knobOver": "slider-knob-h",
-		"knobDown": "slider-knob-h",
 		"background": "slider-vertical-p",
 		"knob": "slider-knob-c",
 		"knobBefore": "slider-vertical-s"
 	},
 	"fancy": {
-		"knobOver": "slider-knob-h",
-		"knobDown": "slider-knob-h",
 		"background": "slider-fancy-p",
 		"knob": "slider-knob-c",
 		"knobBefore": "slider-fancy-knob"
@@ -418,10 +357,8 @@
 		"font": "button",
 		"fontColor": "white",
 		"downFontColor": "white",
-		"overFontColor": "gray",
-		"up": "button-h",
-		"down": "button-p",
-		"over": "button-h"
+		"up": "button-c",
+		"down": "button-p"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
@@ -448,8 +385,7 @@
 "com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle": {
 	"default": {
 		"plus": "tree-plus-c",
-		"minus": "tree-minus-c",
-		"background": "black"
+		"minus": "tree-minus-c"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {

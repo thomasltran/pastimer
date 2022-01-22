@@ -1,2 +1,0 @@
-JAVA_VERSION="14.0.2"
-MODULES="java.base java.compiler java.datatransfer java.xml java.prefs java.desktop jdk.unsupported"

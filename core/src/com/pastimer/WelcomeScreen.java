@@ -22,8 +22,8 @@ public class WelcomeScreen implements Screen {
     private Game game;
     private long delayTime;
 
-    public WelcomeScreen(Game gam){
-        this.game = gam;
+    public WelcomeScreen(Game game){
+        this.game = game;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
     }
@@ -49,7 +49,7 @@ public class WelcomeScreen implements Screen {
 
     @Override
     public void render(float delta){
-        Gdx.gl.glClearColor(220/255.0f, 133/255.0f, 133/255.0f, 1);
+        Gdx.gl.glClearColor(234/255.0f, 172/255.0f, 172/255.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
@@ -83,15 +83,15 @@ public class WelcomeScreen implements Screen {
     }
 
     public void setup(){
-        TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.10}pastimer", Pastimer.skin, "title");
+        TypingLabel text = new TypingLabel("{WAIT=1.0}{GRADIENT}{SPEED=0.10}pastimer", Pastimer.skin, "welcome");
         //266 79
         //216 219
         Texture texture = new Texture(Gdx.files.internal("peachLogo.png"));
         Image image = new Image(texture);
         System.out.println(text.getWidth() + " " + text.getHeight());
         System.out.println(texture.getWidth()+" "+texture.getHeight());
-        text.setPosition(Gdx.graphics.getWidth()/2-133, Gdx.graphics.getHeight()/2);
-        image.setPosition(Gdx.graphics.getWidth()/2+143, Gdx.graphics.getHeight()/2-7);
+        text.setPosition(Gdx.graphics.getWidth()/2-189.5f, Gdx.graphics.getHeight()/2);
+        image.setPosition(Gdx.graphics.getWidth()/2+189.5f+10, Gdx.graphics.getHeight()/2+5);
         image.setSize(image.getWidth()/2.2f, image.getHeight()/2.2f);
         image.addAction(Actions.sequence(Actions.fadeOut(0), Actions.fadeOut(3.2f), Actions.fadeIn(2f)));
         stage.addActor(text);

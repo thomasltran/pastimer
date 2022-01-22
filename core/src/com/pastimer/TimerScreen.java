@@ -13,7 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.rafaskoberg.gdx.typinglabel.*;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+
+import java.awt.*;
 
 public class TimerScreen implements Screen {
 
@@ -26,7 +28,7 @@ public class TimerScreen implements Screen {
     private Button subtract;
     private TextButton welcomeScreen;
     private TextButton mineSweeperScreen;
-
+    private TextField toDoInput;
     public TimerScreen(Game game){
         this.game = game;
         stage = new Stage(new ScreenViewport());
@@ -52,12 +54,15 @@ public class TimerScreen implements Screen {
         mineSweeperScreen.setPosition(10,40);
         stage.addActor(mineSweeperScreen);
 
+        toDoInput = new TextField("hello world", Pastimer.skin, "default");
+        toDoInput.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+        stage.addActor(toDoInput);
     }
     //466 144
 
     @Override
     public void render(float delta){
-        Gdx.gl.glClearColor(220/255.0f, 133/255.0f, 133/255.0f, 1);
+        Gdx.gl.glClearColor(234/255.0f, 172/255.0f, 172/255.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
@@ -79,7 +84,7 @@ public class TimerScreen implements Screen {
         if(welcomeScreen.isPressed())
             game.setScreen(new WelcomeScreen(game));
         if(mineSweeperScreen.isPressed())
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new MineSweeperScreen(game));
     }
 
     @Override
@@ -111,17 +116,16 @@ public class TimerScreen implements Screen {
         display = new Label(timer.getString(timer.getHour())+":"
                                 +timer.getString(timer.getMinute())+":"
                                 +timer.getString(timer.getSecond()), Pastimer.skin, "time");
-        System.out.println(display.getWidth()+" "+display.getHeight());
-        display.setPosition(Gdx.graphics.getWidth()/2-233, Gdx.graphics.getHeight()-144-72);
+        display.setPosition(Gdx.graphics.getWidth()/2-386, Gdx.graphics.getHeight()-239);
         stage.addActor(display);
     }
 
     private void buildButtons(){
         add = new Button(Pastimer.skin);
-        add.setPosition(display.getX(), display.getY());
+        add.setPosition(display.getX(), display.getY()-30);
         stage.addActor(add);
         subtract = new Button(Pastimer.skin);
-        subtract.setPosition(display.getX()+display.getWidth(), display.getY()-100);
+        subtract.setPosition(display.getX()+30, display.getY()-30);
         stage.addActor(subtract);
         currTime = TimeUtils.nanoTime();
     }
