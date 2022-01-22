@@ -32,6 +32,7 @@ public class TimerScreen implements Screen {
     private TextField timeEditHour;
     private TextField timeEditMinute;
     private TextField timeEditSecond;
+    private boolean editActive;
     int count;
 
     public TimerScreen(Game game) {
@@ -40,6 +41,7 @@ public class TimerScreen implements Screen {
         timer = new Time();
         count = 0;
         timeEdit = new TextField[3];
+        editActive = false;
     }
 
     @Override
@@ -49,11 +51,13 @@ public class TimerScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (!event.isHandled()) {
                     stage.unfocusAll();
+                    editActive = false;
                 }
             }
         });
 
         buildTimer();
+        buildTimerEdit();
         buildButtons();
 
         welcomeScreen = new TextButton("Welcome", Pastimer.skin);
@@ -99,6 +103,19 @@ public class TimerScreen implements Screen {
             game.setScreen(new WelcomeScreen(game));
         if (mineSweeperScreen.isPressed())
             game.setScreen(new MineSweeperScreen(game));
+
+        if(editActive)
+        {
+            for(int i = 0; i<timeEdit.length; i++) {
+                if(timeEdit[i].getText().equals(""))
+                    timeEdit[i].setText("0");
+            }
+            timer = new Time(Integer.parseInt(timeEdit[0].getText()), Integer.parseInt(timeEdit[1].getText()), Integer.parseInt(timeEdit[2].getText()));
+        }
+        else
+            if(!editActive){
+                removeTimerEdit();
+            }
     }
 
     @Override
@@ -132,6 +149,7 @@ public class TimerScreen implements Screen {
                 + timer.getString(timer.getSecond()), Pastimer.skin, "time");
         timeDisplay.setPosition(Gdx.graphics.getWidth() / 2 - 386, Gdx.graphics.getHeight() - 239);
         timeDisplay.setTouchable(Touchable.enabled);
+        timeDisplay.setAlignment(1);
         System.out.println(timeDisplay.getWidth() + " " + timeDisplay.getHeight());
         timeDisplay.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -142,6 +160,8 @@ public class TimerScreen implements Screen {
                 count++;
                 System.out.println("touch" + count);
                 buildTimerEdit();
+                displayTimerEdit();
+                editActive = true;
             }
         });
         stage.addActor(timeDisplay);
@@ -153,25 +173,31 @@ public class TimerScreen implements Screen {
             if (i == 0) {
                 timeEdit[i] = new TextField(timer.getString(timer.getHour()), Pastimer.skin, "time");
                 timeEdit[i].setPosition(Gdx.graphics.getWidth() / 2 - 400, Gdx.graphics.getHeight() - 227);
-                timeEdit[i].setFocusTraversal(true);
             } else if (i == 1) {
                 timeEdit[i] = new TextField(timer.getString(timer.getMinute()), Pastimer.skin, "time");
                 timeEdit[i].setPosition(Gdx.graphics.getWidth() / 2 - 119, Gdx.graphics.getHeight() - 227);
-                timeEdit[i].setFocusTraversal(true);
             } else if (i == 2) {
                 timeEdit[i] = new TextField(timer.getString(timer.getSecond()), Pastimer.skin, "time");
                 timeEdit[i].setPosition(Gdx.graphics.getWidth() / 2 + 162, Gdx.graphics.getHeight() - 227);
-                timeEdit[i].setFocusTraversal(false);
             }
 
+            timeEdit[i].setFocusTraversal(true);
             timeEdit[i].setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
             timeEdit[i].setSize(237, 215);
             timeEdit[i].setAlignment(1);
             timeEdit[i].setMaxLength(2);
         }
 
+    }
+    private void displayTimerEdit(){
         for (int i = 0; i < timeEdit.length; i++) {
             stage.addActor(timeEdit[i]);
+        }
+    }
+
+    private void removeTimerEdit(){
+        for(int i = 0; i<timeEdit.length; i++){
+            timeEdit[i].remove();
         }
     }
 
