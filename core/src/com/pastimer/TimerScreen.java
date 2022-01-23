@@ -1,5 +1,7 @@
 package com.pastimer;
 //cursor set, time set
+
+import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -21,7 +23,6 @@ public class TimerScreen implements Screen {
     private Stage stage;
     private Game game;
     private Time timer;
-    private Label timeDisplay;
     private long currTime;
     private Button add;
     private Button subtract;
@@ -29,10 +30,9 @@ public class TimerScreen implements Screen {
     private TextButton mineSweeperScreen;
     private TextField toDoInput;
     private TextField[] timeEdit;
-    private TextField timeEditHour;
-    private TextField timeEditMinute;
-    private TextField timeEditSecond;
+    private Label[] timeDisplay;
     private boolean editActive;
+    private Label colon;
     int count;
 
     public TimerScreen(Game game) {
@@ -40,14 +40,15 @@ public class TimerScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         timer = new Time();
         count = 0;
-        timeEdit = new TextField[3];
+        timeEdit = new TextField[2];
+        timeDisplay = new Label[2];
         editActive = false;
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        stage.addListener(new ClickListener(){
+        stage.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (!event.isHandled()) {
                     stage.unfocusAll();
@@ -82,19 +83,15 @@ public class TimerScreen implements Screen {
         stage.act(delta);
         stage.draw();
 
-        timeDisplay.setText(timer.getString(timer.getHour()) + ":"
-                + timer.getString(timer.getMinute()) + ":"
-                + timer.getString(timer.getSecond()));
+        timeDisplay[0].setText(timer.getString(timer.getMinute()));
+        timeDisplay[1].setText(timer.getString(timer.getSecond()));
+        System.out.println(timeDisplay[1].getWidth());
 
         if (TimeUtils.nanosToMillis(currTime) + 1000 < TimeUtils.nanosToMillis(TimeUtils.nanoTime())) {
             currTime = TimeUtils.nanoTime();
             timer.subtract();
         }
 
-        if (add.isPressed()) {
-            timer.add();
-            stage.setKeyboardFocus(null);
-        }
         if (subtract.isPressed()) {
             timer.subtract();
         }
@@ -104,18 +101,19 @@ public class TimerScreen implements Screen {
         if (mineSweeperScreen.isPressed())
             game.setScreen(new MineSweeperScreen(game));
 
-        if(editActive)
-        {
-            for(int i = 0; i<timeEdit.length; i++) {
-                if(timeEdit[i].getText().equals(""))
-                    timeEdit[i].setText("0");
+        if (editActive) {
+            int[] newTime = new int[2];
+            for (int i = 0; i < timeEdit.length; i++) {
+                if (timeEdit[i].getText().equals(""))
+                    newTime[i] = 0;
+                else
+                    newTime[i] = Integer.parseInt(timeEdit[i].getText());
             }
-            timer = new Time(Integer.parseInt(timeEdit[0].getText()), Integer.parseInt(timeEdit[1].getText()), Integer.parseInt(timeEdit[2].getText()));
+
+            timer = new Time(newTime[0], newTime[1]);
+        } else {
+            removeTimerEdit();
         }
-        else
-            if(!editActive){
-                removeTimerEdit();
-            }
     }
 
     @Override
@@ -144,70 +142,74 @@ public class TimerScreen implements Screen {
     }
 
     private void buildTimer() {
-        timeDisplay = new Label(timer.getString(timer.getHour()) + ":"
-                + timer.getString(timer.getMinute()) + ":"
-                + timer.getString(timer.getSecond()), Pastimer.skin, "time");
-        timeDisplay.setPosition(Gdx.graphics.getWidth() / 2 - 386, Gdx.graphics.getHeight() - 239);
-        timeDisplay.setTouchable(Touchable.enabled);
-        timeDisplay.setAlignment(1);
-        System.out.println(timeDisplay.getWidth() + " " + timeDisplay.getHeight());
-        timeDisplay.addListener(new InputListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
+        colon = new Label(":", Pastimer.skin, "time");
+        colon.setPosition(Gdx.graphics.getWidth() / 2 - colon.getWidth() / 2, Gdx.graphics.getHeight() - 239);
+        colon.setAlignment(1);
 
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                count++;
-                System.out.println("touch" + count);
-                buildTimerEdit();
-                displayTimerEdit();
-                editActive = true;
+        for (int i = 0; i < timeDisplay.length; i++) {
+            if (i == 0) {
+                timeDisplay[i] = new Label(timer.getString(timer.getMinute()), Pastimer.skin, "time");
+                timeDisplay[i].setPosition(Gdx.graphics.getWidth()/2-timeDisplay[i].getWidth()-colon.getWidth()-10, Gdx.graphics.getHeight()-239);
+            } else if (i == 1) {
+                timeDisplay[i] = new Label(timer.getString(timer.getSecond()), Pastimer.skin, "time");
+                timeDisplay[i].setPosition(Gdx.graphics.getWidth()/2+colon.getWidth()+10, Gdx.graphics.getHeight()-239);
             }
-        });
-        stage.addActor(timeDisplay);
+            timeDisplay[i].setTouchable(Touchable.enabled);
+            timeDisplay[i].setAlignment(1);
+            timeDisplay[i].addListener(new InputListener() {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
+                }
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    count++;
+                    System.out.println("touch" + count);
+                    buildTimerEdit();
+                    displayTimerEdit();
+                    editActive = true;
+                }
+            });
+            stage.addActor(timeDisplay[i]);
+        }
+        stage.addActor(colon);
+        //stage.addActor(timeDisplay);
     }
 
     private void buildTimerEdit() {
 
         for (int i = 0; i < timeEdit.length; i++) {
             if (i == 0) {
-                timeEdit[i] = new TextField(timer.getString(timer.getHour()), Pastimer.skin, "time");
-                timeEdit[i].setPosition(Gdx.graphics.getWidth() / 2 - 400, Gdx.graphics.getHeight() - 227);
-            } else if (i == 1) {
                 timeEdit[i] = new TextField(timer.getString(timer.getMinute()), Pastimer.skin, "time");
-                timeEdit[i].setPosition(Gdx.graphics.getWidth() / 2 - 119, Gdx.graphics.getHeight() - 227);
-            } else if (i == 2) {
+                timeEdit[i].setSize(237, 215);
+                timeEdit[i].setPosition(colon.getX()+colon.getWidth()/2-timeEdit[i].getWidth()-22, Gdx.graphics.getHeight() - 227);
+            } else if (i == 1) {
                 timeEdit[i] = new TextField(timer.getString(timer.getSecond()), Pastimer.skin, "time");
-                timeEdit[i].setPosition(Gdx.graphics.getWidth() / 2 + 162, Gdx.graphics.getHeight() - 227);
+                timeEdit[i].setSize(237, 215);
+                timeEdit[i].setPosition(colon.getX()+colon.getWidth()/2+21, Gdx.graphics.getHeight() - 227);
             }
-
             timeEdit[i].setFocusTraversal(true);
             timeEdit[i].setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
-            timeEdit[i].setSize(237, 215);
             timeEdit[i].setAlignment(1);
             timeEdit[i].setMaxLength(2);
         }
 
     }
-    private void displayTimerEdit(){
+
+    private void displayTimerEdit() {
         for (int i = 0; i < timeEdit.length; i++) {
             stage.addActor(timeEdit[i]);
         }
     }
 
-    private void removeTimerEdit(){
-        for(int i = 0; i<timeEdit.length; i++){
+    private void removeTimerEdit() {
+        for (int i = 0; i < timeEdit.length; i++) {
             timeEdit[i].remove();
         }
     }
 
 
     private void buildButtons() {
-        add = new Button(Pastimer.skin);
-        add.setPosition(timeDisplay.getX(), timeDisplay.getY() - 30);
-        stage.addActor(add);
         subtract = new Button(Pastimer.skin);
-        subtract.setPosition(timeDisplay.getX() + 30, timeDisplay.getY() - 30);
+        subtract.setPosition(timeDisplay[0].getX() + 30, timeDisplay[0].getY() - 30);
         stage.addActor(subtract);
         currTime = TimeUtils.nanoTime();
     }
