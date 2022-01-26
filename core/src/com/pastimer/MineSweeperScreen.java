@@ -6,16 +6,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.Input;
-
 
 import java.util.*;
 
@@ -44,6 +47,9 @@ public class MineSweeperScreen implements Screen {
    int size = 60;
    int flags;
    SpriteBatch batch;
+   TextButton back;
+   Stage stage;
+   boolean active;
    private static BitmapFont font;
 
    public MineSweeperScreen(Game game) {
@@ -75,6 +81,8 @@ public class MineSweeperScreen implements Screen {
       pieces = new int[16][16];
       generateMineLocation();
       addBombs();
+      active = true;
+
       for (int r = 0; r < board.length; r++) {
          for (int c = 0; c < board[0].length; c++) {
 
@@ -83,6 +91,12 @@ public class MineSweeperScreen implements Screen {
             }
          }
       }
+
+      stage = new Stage(new ScreenViewport());
+      back = new TextButton("Return", Pastimer.skin);
+      back.setSize(500, 50);
+      back.setPosition(Gdx.graphics.getWidth()/2-back.getWidth()/2, Gdx.graphics.getHeight()-back.getHeight());
+      stage.addActor(back);
 
    }
 
@@ -314,10 +328,10 @@ public class MineSweeperScreen implements Screen {
       // blue and alpha component in the range [0,1]
       // of the color to be used to clear the screen.
       ScreenUtils.clear(185 / 255f, 185 / 255f, 185 / 255f, 1);
+      Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
       // tell the camera to update its matrices.
       camera.update();
-
       // tell the SpriteBatch to render in the
       // coordinate system specified by the camera.
       batch.setProjectionMatrix(camera.combined);
@@ -361,11 +375,12 @@ public class MineSweeperScreen implements Screen {
          }
       }
       String flagCounter = String.valueOf(flags);
-      batch.draw(flagIcon, 930, 960, 100, 100);
+      batch.draw(flagIcon, 930-flagIcon.getWidth()/2, 960, 100, 100);
       MineSweeperScreen.font.draw(batch, flagCounter, 1000, 1030);
 
+
       // process user input
-      if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+      if (active && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
          Vector3 touchPos = new Vector3();
          touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
          camera.unproject(touchPos);
@@ -381,6 +396,7 @@ public class MineSweeperScreen implements Screen {
                   }
                }
                MineSweeperScreen.font.draw(batch, "THE PEACHES WIN AGAIN!!!! :)", 190, 515);
+               active = false;
             } else if (pieces[x][y] != 1) {
                pieces[x][y] = 3;
 
@@ -389,7 +405,7 @@ public class MineSweeperScreen implements Screen {
          } else
          MineSweeperScreen.font.draw(batch, "I clicked " + strX + " and " + strY, 240, 240);
       }
-      if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+      if (active && Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
          Vector3 touchPos = new Vector3();
          touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
          camera.unproject(touchPos);
@@ -413,9 +429,19 @@ public class MineSweeperScreen implements Screen {
       if (checkWin()) {
 
          MineSweeperScreen.font.draw(batch, "You Win", 240, 240);
+         active = false;
       }
 
       batch.end();
+
+      if (!active) {
+         Gdx.input.setInputProcessor(stage);
+         stage.act(delta);
+         stage.draw();
+         if (back.isPressed()) {
+            game.setScreen(new TimerScreen(game));
+         }
+      }
    }
 
    @Override
@@ -440,6 +466,8 @@ public class MineSweeperScreen implements Screen {
 
    @Override
    public void dispose() {
+      stage.dispose();
+      batch.dispose();
       zero.dispose();
       one.dispose();
       two.dispose();
