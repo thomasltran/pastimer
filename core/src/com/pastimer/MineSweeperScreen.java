@@ -375,7 +375,7 @@ public class MineSweeperScreen implements Screen {
          }
       }
       String flagCounter = String.valueOf(flags);
-      batch.draw(flagIcon, 930-flagIcon.getWidth()/2, 960, 100, 100);
+      batch.draw(flagIcon, 930, 960, 100, 100);
       MineSweeperScreen.font.draw(batch, flagCounter, 1000, 1030);
 
 
