@@ -53,7 +53,7 @@ public class WelcomeScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
-        //if(TimeUtils.nanosToMillis(delayTime) + 6500 < TimeUtils.nanosToMillis(TimeUtils.nanoTime()))
+        if(TimeUtils.nanosToMillis(delayTime) + 6500 < TimeUtils.nanosToMillis(TimeUtils.nanoTime()))
             game.setScreen(new TimerScreen(game));
     }
 
