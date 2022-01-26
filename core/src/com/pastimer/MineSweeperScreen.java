@@ -329,47 +329,47 @@ public class MineSweeperScreen implements Screen {
       for (int i = 0; i < board.length; i++) {
          for (int j = 0; j < board[0].length; j++) {
             if (board[i][j] == -1) {
-               batch.draw(bomb, i * (size), j * (size), size, size);
+               batch.draw(bomb, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 0) {
-               batch.draw(zero, i * (size), j * (size), size, size);
+               batch.draw(zero, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 1) {
-               batch.draw(one, i * (size), j * (size), size, size);
+               batch.draw(one, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 2) {
-               batch.draw(two, i * (size), j * (size), size, size);
+               batch.draw(two, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 3) {
-               batch.draw(three, i * (size), j * (size), size, size);
+               batch.draw(three, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 4) {
-               batch.draw(four, i * (size), j * (size), size, size);
+               batch.draw(four, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 5) {
-               batch.draw(five, i * (size), j * (size), size, size);
+               batch.draw(five, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 6) {
-               batch.draw(six, i * (size), j * (size), size, size);
+               batch.draw(six, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 7) {
-               batch.draw(seven, i * (size), j * (size), size, size);
+               batch.draw(seven, i *(size)+480, j * (size), size, size);
             } else if (board[i][j] == 8) {
-               batch.draw(eight, i * (size), j * (size), size, size);
+               batch.draw(eight, i *(size)+480, j * (size), size, size);
             }
          }
       }
       for (int i = 0; i < board.length; i++) {
          for (int j = 0; j < board[0].length; j++) {
             if (pieces[i][j] == 0) {
-               batch.draw(starting, j * (size), i * (size), size, size);
+               batch.draw(starting, j * (size)+480, i *(size), size, size);
             } else if (pieces[i][j] == 1) {
-               batch.draw(flag, j * (size), i * (size), size, size);
+               batch.draw(flag, j * (size)+480, i *(size), size, size);
             }
          }
       }
       String flagCounter = String.valueOf(flags);
-      batch.draw(flagIcon, 170, 450, 100, 100);
-      MineSweeperScreen.font.draw(batch, flagCounter, 230, 515);
+      batch.draw(flagIcon, 930, 960, 100, 100);
+      MineSweeperScreen.font.draw(batch, flagCounter, 1000, 1030);
 
       // process user input
       if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
          Vector3 touchPos = new Vector3();
          touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
          camera.unproject(touchPos);
-         int y = (int) (touchPos.x / size);
+         int y = ((int) (touchPos.x / size))-8;
          int x = (int) ((touchPos.y) / size);
          String strX = String.valueOf(x);
          String strY = String.valueOf(y);
