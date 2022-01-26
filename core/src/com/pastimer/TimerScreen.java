@@ -1,5 +1,5 @@
 package com.pastimer;
-//cursor set, time set
+//bugger bruh
 
 import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -50,7 +50,7 @@ public class TimerScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                if (!event.isHandled()) {
+                if (!event.isHandled() && editActive) {
                     stage.unfocusAll();
                     editActive = false;
                 }
@@ -143,7 +143,7 @@ public class TimerScreen implements Screen {
 
     private void buildTimer() {
         colon = new Label(":", Pastimer.skin, "time");
-        colon.setPosition(Gdx.graphics.getWidth() / 2 - colon.getWidth() / 2, Gdx.graphics.getHeight() - 239);
+        colon.setPosition(Gdx.graphics.getWidth() / 2 - colon.getWidth() / 2, Gdx.graphics.getHeight() - 225);
         colon.setAlignment(1);
 
         for (int i = 0; i < timeDisplay.length; i++) {
@@ -158,6 +158,7 @@ public class TimerScreen implements Screen {
             timeDisplay[i].setAlignment(1);
             timeDisplay[i].addListener(new InputListener() {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    editActive = true;
                     return true;
                 }
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -165,7 +166,7 @@ public class TimerScreen implements Screen {
                     System.out.println("touch" + count);
                     buildTimerEdit();
                     displayTimerEdit();
-                    editActive = true;
+                    
                 }
             });
             stage.addActor(timeDisplay[i]);

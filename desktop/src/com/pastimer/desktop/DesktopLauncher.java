@@ -20,7 +20,7 @@ public class DesktopLauncher {
         config.resizable = false;
         config.x = -8;
         config.y = 0;
-        config.foregroundFPS = 60;
+        config.foregroundFPS = 240;
         new LwjglApplication(new Pastimer(), config);
     }
 }
