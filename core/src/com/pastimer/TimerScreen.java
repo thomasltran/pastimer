@@ -28,6 +28,7 @@ public class TimerScreen implements Screen {
     private Button subtract;
     private TextButton welcomeScreen;
     private TextButton mineSweeperScreen;
+    private TextButton anagramsScreen;
     private TextField toDoInput;
     private TextField[] timeEdit;
     private Label[] timeDisplay;
@@ -69,6 +70,10 @@ public class TimerScreen implements Screen {
         mineSweeperScreen.setPosition(10, 40);
         stage.addActor(mineSweeperScreen);
 
+        anagramsScreen = new TextButton("Anagrams", Pastimer.skin);
+        anagramsScreen.setPosition(10, 70);
+        stage.addActor(anagramsScreen);
+
        /* toDoInput = new TextField("hello world", Pastimer.skin);
 
         toDoInput.setPosition(500, 500);
@@ -100,6 +105,8 @@ public class TimerScreen implements Screen {
             game.setScreen(new WelcomeScreen(game));
         if (mineSweeperScreen.isPressed())
             game.setScreen(new MineSweeperScreen(game));
+        if (anagramsScreen.isPressed())
+            game.setScreen(new Anagrams(game));
 
         if (editActive) {
             int[] newTime = new int[2];
