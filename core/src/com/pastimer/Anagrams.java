@@ -13,6 +13,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -31,7 +32,7 @@ public class Anagrams implements Screen {
     private HashSet<String> letters;
     private HashSet<String> answers;
     private Time timer;
-    private int[][] board;
+    private Label[][] board;
     private Table table;
     
 
@@ -41,7 +42,7 @@ public class Anagrams implements Screen {
         words= new HashSet<String>();
         answers = new HashSet<String>();
         timer = new Time();
-        keybaord = new TextField("testing", new TextField.TextFieldStyle());
+        
         
         
     }
@@ -83,13 +84,43 @@ public class Anagrams implements Screen {
             System.out.println("IOException");
         }
         submit = new TextButton("submit", Pastimer.skin);
-        submit.setPosition(250, 10);
+        submit.setPosition(540, 60);
         stage.addActor(submit);
 
         buildTable();
-      
+        table = new Table();
+        
+	table.setFillParent(true);
+	
+
+	table.setDebug(true); // This is optional, but enables debug lines for tables.
+    
+	// Add widgets to the table here.
+    Label nameLabel = new Label("Name:", Pastimer.skin);
+    TextField nameText = new TextField("number1",Pastimer.skin);
+    Label addressLabel = new Label("Address:", Pastimer.skin);
+    TextField addressText = new TextField("hello", Pastimer.skin);
+
+   for(int i= 0; i<board.length; i++){
+    for(int j = 0; j < board[0].length; j++ ){
+        table.add(board[i][j]);
+        if(j==4){
+            table.row();
+        }
+       
+    }
+
+    }
+    table.setPosition(250, 300);
+    table.setColor(Color.BLACK);
+    table.setSize(500, 600);
+   
+    stage.addActor(table);
+    
+    
     
     }
+    
 
     @Override
     public void render(float delta){
@@ -123,11 +154,12 @@ public class Anagrams implements Screen {
         stage.dispose();
     }
 private void buildTable(){
-board = new int[5][6];
-for(int i = 0; i < 5; i++){
-    for(int j = 0; j < 6; j++){
-        board[i][j] = 0;
-        table.add(TextField("hello world")).width(50).height(50);
+board = new Label[6][5];
+for(int i = 0; i < 6; i++){
+    for(int j = 0; j < 5; j++){
+       board[i][j] = new Label(Integer.toString(i) +"," +Integer.toString(j), Pastimer.skin );
+       board[i][j].setColor(Color.BLACK);
+       board[i][j].setFontScale(3);
     }
 }
 
