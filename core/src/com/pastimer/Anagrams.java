@@ -26,52 +26,54 @@ public class Anagrams implements Screen {
     private Stage stage;
     private Game game;
     private Button reroll;
-    private TextField keybaord;
+    private TextField input;
     private TextButton submit;
     private HashSet<String> possibleWords;
-    private HashSet<String> letters;
+    private ArrayList<String> letters;
     private HashSet<String> allowedWords;
+    private HashSet<String> answers;
     private Time timer;
     private Label[][] board;
     private Table table;
-    
-
+    private int points;
+   
     public Anagrams(Game game){
         this.game = game;
         stage = new Stage(new ScreenViewport());
         possibleWords= new HashSet<String>();
         allowedWords = new HashSet<String>();
         timer = new Time();
-        populateAllowedWords();
-        populateLetters(6);
+        populateLetters(6);  
+        points =0;
       
-
-        
-    
-       
-        
-        
-        
     }
     public static String getRandomLetter(){
         int rand = (int)(Math.random() * 25);
         String a[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
        return a[rand];
        }
-       public void populateLetters(int numLetters){
+    public void populateLetters(int numLetters){
         for(int i = 0; i< numLetters; i++){
             letters.add(getRandomLetter());
        
        }
-    
-    public void populateAllowedWords() {
+    }
+    public boolean validAnswer(String word){
+        if(possibleWords.contains(word)&& !answers.contains(word)){
+            return true;
+        }
+        return false;
+
+
+    }
+    public void populatePossibleWords() {
         try{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Scanner input = new Scanner(new FileReader("words.txt"));
+        Scanner input = new Scanner(new FileReader("possibleWords.txt"));
         while(input.hasNextLine()){
             String line = input.nextLine().trim();
             line = line.toLowerCase();
-            allowedWords.add(line);
+            possibleWords.add(line);
         }
         }
         catch(FileNotFoundException e){
@@ -81,7 +83,7 @@ public class Anagrams implements Screen {
             System.out.println("IOException");
         }
     }
-   
+    
     @Override
     public void show(){
         Gdx.input.setInputProcessor(stage);
@@ -97,7 +99,11 @@ public class Anagrams implements Screen {
         submit.setPosition(540, 60);
         stage.addActor(submit);
 
-        buildTable();
+        input = new TextField("" , Pastimer.skin);
+        input.setPosition(500,500);
+        stage.addActor(input);
+
+       
         table = new Table();
         
 	table.setFillParent(true);
@@ -120,24 +126,32 @@ public class Anagrams implements Screen {
     stage.addActor(table);
     
     }
-    public String getWord() throws FileNotFoundException, IOException{ 
-       String word = "hello";
-        int rand = (int) (Math.random() * (2315))+1;
-        FileInputStream fs= new FileInputStream("someFile.txt");
-        BufferedReader br = new BufferedReader(new InputStreamReader(fs));
-        for(int i = 0; i < rand; i++)
-            br.readLine();
-        word= br.readLine();
-        return word;
-    
-    }
-
     @Override
     public void render(float delta){
         Gdx.gl.glClearColor(234 / 255.0f, 172 / 255.0f, 172 / 255.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
+        if(submit.isPressed()&& input.getText().length()>=3){
+            if(validAnswer(input.getText())){
+                
+                switch( input.getText().length()) {
+                    case 3:
+                        points +=100;
+                      break;
+                    case 4:
+                        points +=250;
+                      break;
+                      case 5:
+                      points +=500;
+                      case 6:
+                        points +=1000;
+                      break;
+                    default:
+                      points +=5000;
+                  }
+            }
+        }
     }
     @Override
     public void resize(int width, int height) {
@@ -163,18 +177,7 @@ public class Anagrams implements Screen {
     public void dispose() {
         stage.dispose();
     }
-private void buildTable(){
-board = new Label[6][5];
-for(int i = 0; i < 6; i++){
-    for(int j = 0; j < 5; j++){
-       board[i][j] = new Label(Integer.toString(i) +"," +Integer.toString(j), Pastimer.skin );
-       board[i][j].setColor(Color.BLACK);
-       board[i][j].setFontScale(3);
-    }
-}
 
-
-}
 
 }
 

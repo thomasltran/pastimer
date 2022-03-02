@@ -60,7 +60,7 @@ public class Wordle implements Screen {
     public void populatePossibleWords() {
         try{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Scanner input = new Scanner(new FileReader("words.txt"));
+        Scanner input = new Scanner(new FileReader("possibleWords.txt"));
         while(input.hasNextLine()){
             String line = input.nextLine().trim();
             line = line.toLowerCase();
@@ -74,23 +74,7 @@ public class Wordle implements Screen {
             System.out.println("IOException");
         }
     }
-    public void populateAllowedWords() {
-        try{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Scanner input = new Scanner(new FileReader("words.txt"));
-        while(input.hasNextLine()){
-            String line = input.nextLine().trim();
-            line = line.toLowerCase();
-            allowedWords.add(line);
-        }
-        }
-        catch(FileNotFoundException e){
-            System.out.println("File not found");
-        }
-        catch(IOException e){
-            System.out.println("IOException");
-        }
-    }
+    
    
     @Override
     public void show(){
