@@ -28,9 +28,9 @@ public class Anagrams implements Screen {
     private Button reroll;
     private TextField keybaord;
     private TextButton submit;
-    private HashSet<String> words;
+    private HashSet<String> possibleWords;
     private HashSet<String> letters;
-    private HashSet<String> answers;
+    private HashSet<String> allowedWords;
     private Time timer;
     private Label[][] board;
     private Table table;
@@ -39,21 +39,39 @@ public class Anagrams implements Screen {
     public Anagrams(Game game){
         this.game = game;
         stage = new Stage(new ScreenViewport());
-        words= new HashSet<String>();
-        answers = new HashSet<String>();
+        possibleWords= new HashSet<String>();
+        allowedWords = new HashSet<String>();
         timer = new Time();
+        populateAllowedWords();
+        populateLetters(6);
+      
+
+        
+    
+       
         
         
         
     }
-    public void populateHashSet() throws FileNotFoundException, IOException{
+    public static String getRandomLetter(){
+        int rand = (int)(Math.random() * 25);
+        String a[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+       return a[rand];
+       }
+       public void populateLetters(int numLetters){
+        for(int i = 0; i< numLetters; i++){
+            letters.add(getRandomLetter());
+       
+       }
+    
+    public void populateAllowedWords() {
         try{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Scanner input = new Scanner(new FileReader("words.txt"));
         while(input.hasNextLine()){
             String line = input.nextLine().trim();
             line = line.toLowerCase();
-            words.add(line);
+            allowedWords.add(line);
         }
         }
         catch(FileNotFoundException e){
@@ -74,15 +92,7 @@ public class Anagrams implements Screen {
                 }
             }
         });
-        try{
-            populateHashSet();
-        }
-        catch(FileNotFoundException e){
-            System.out.println("File not found");
-        }
-        catch(IOException e){
-            System.out.println("IOException");
-        }
+        
         submit = new TextButton("submit", Pastimer.skin);
         submit.setPosition(540, 60);
         stage.addActor(submit);
@@ -91,16 +101,8 @@ public class Anagrams implements Screen {
         table = new Table();
         
 	table.setFillParent(true);
-	
-
 	table.setDebug(true); // This is optional, but enables debug lines for tables.
     
-	// Add widgets to the table here.
-    Label nameLabel = new Label("Name:", Pastimer.skin);
-    TextField nameText = new TextField("number1",Pastimer.skin);
-    Label addressLabel = new Label("Address:", Pastimer.skin);
-    TextField addressText = new TextField("hello", Pastimer.skin);
-
    for(int i= 0; i<board.length; i++){
     for(int j = 0; j < board[0].length; j++ ){
         table.add(board[i][j]);
@@ -117,10 +119,18 @@ public class Anagrams implements Screen {
    
     stage.addActor(table);
     
-    
+    }
+    public String getWord() throws FileNotFoundException, IOException{ 
+       String word = "hello";
+        int rand = (int) (Math.random() * (2315))+1;
+        FileInputStream fs= new FileInputStream("someFile.txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+        for(int i = 0; i < rand; i++)
+            br.readLine();
+        word= br.readLine();
+        return word;
     
     }
-    
 
     @Override
     public void render(float delta){

@@ -13,71 +13,141 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
-
 
 public class Wordle implements Screen {
     
     private Stage stage;
     private Game game;
     private Button reroll;
-    private TextField input;
-    private HashSet<String> words;
+    private TextField keybaord;
+    private TextButton submit;
+    private HashSet<String> possibleWords;
     private HashSet<String> letters;
-    private HashSet<String> answers;
+    private HashSet<String> allowedWords;
     private Time timer;
+    private Label[][] board;
+    private Table table;
+    
 
-    public Wordle(Game game) throws IOException{
+    public Wordle(Game game){
         this.game = game;
         stage = new Stage(new ScreenViewport());
-        words= new HashSet<String>();
-        answers = new HashSet<String>();
+        possibleWords= new HashSet<String>();
+        allowedWords = new HashSet<String>();
         timer = new Time();
-        try{
-        System.out.print(generateWord());
+        try{ 
+            getWord();
+            populatePossibleWords();
+            populateAllowedWords();
         }
-        catch( FileNotFoundException e){
-            System.out.print("error");
+        catch(FileNotFoundException e){
+            System.out.println(e);
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
         
-        }
+        
         
     }
-    public void populateHashSet() throws FileNotFoundException, IOException{
+    public void populatePossibleWords() {
+        try{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Scanner input = new Scanner(new FileReader("allowedWords.txt"));
+        Scanner input = new Scanner(new FileReader("words.txt"));
         while(input.hasNextLine()){
             String line = input.nextLine().trim();
             line = line.toLowerCase();
-            words.add(line);
+            possibleWords.add(line);
+        }
+        }
+        catch(FileNotFoundException e){
+            System.out.println("File not found");
+        }
+        catch(IOException e){
+            System.out.println("IOException");
         }
     }
-    public String generateWord() throws FileNotFoundException, IOException {
-        int rand = (int)(Math.random() *2315)+ 1;
-        String word = "hello";
-        Scanner input = new Scanner(new FileReader("possibleWords.txt"));
-        for(int i = 0; i < rand; i++){
+    public void populateAllowedWords() {
+        try{
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        Scanner input = new Scanner(new FileReader("words.txt"));
+        while(input.hasNextLine()){
             String line = input.nextLine().trim();
             line = line.toLowerCase();
-            word = line;
+            allowedWords.add(line);
         }
-        return word;
+        }
+        catch(FileNotFoundException e){
+            System.out.println("File not found");
+        }
+        catch(IOException e){
+            System.out.println("IOException");
+        }
     }
-    
-    public void render(){
-
-    
-    }
-    
+   
     @Override
     public void show(){
         Gdx.input.setInputProcessor(stage);
-       // stage.addListener();
+        stage.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y){
+                if(!event.isHandled()){
+                    stage.unfocusAll();
+                }
+            }
+        });
+        
+        submit = new TextButton("submit", Pastimer.skin);
+        submit.setPosition(540, 60);
+        stage.addActor(submit);
+
+        buildTable();
+        table = new Table();
+        
+	table.setFillParent(true);
+	table.setDebug(true); // This is optional, but enables debug lines for tables.
     
+   for(int i= 0; i<board.length; i++){
+    for(int j = 0; j < board[0].length; j++ ){
+        table.add(board[i][j]);
+        if(j==4){
+            table.row();
+        }
+       
+    }
+
+    }
+    table.setPosition(250, 300);
+    table.setColor(Color.BLACK);
+    table.setSize(500, 600);
+   
+    stage.addActor(table);
+    
+    }
+    public String getWord() throws FileNotFoundException, IOException{ 
+       String word = "hello";
+        int rand = (int) (Math.random() * (2315))+1;
+        FileInputStream fs= new FileInputStream("someFile.txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+        for(int i = 0; i < rand; i++)
+            br.readLine();
+        word= br.readLine();
+        return word;
+    
+    }
+
+    @Override
+    public void render(float delta){
+        Gdx.gl.glClearColor(234 / 255.0f, 172 / 255.0f, 172 / 255.0f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(delta);
+        stage.draw();
     }
     @Override
     public void resize(int width, int height) {
@@ -103,9 +173,18 @@ public class Wordle implements Screen {
     public void dispose() {
         stage.dispose();
     }
-    @Override
-    public void render(float arg0) {
-        // TODO Auto-generated method stub
-        
+private void buildTable(){
+board = new Label[6][5];
+for(int i = 0; i < 6; i++){
+    for(int j = 0; j < 5; j++){
+       board[i][j] = new Label(Integer.toString(i) +"," +Integer.toString(j), Pastimer.skin );
+       board[i][j].setColor(Color.BLACK);
+       board[i][j].setFontScale(3);
     }
 }
+
+
+}
+
+}
+
