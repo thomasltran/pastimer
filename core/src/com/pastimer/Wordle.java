@@ -45,7 +45,7 @@ public class Wordle implements Screen {
         try{ 
             getWord();
             populatePossibleWords();
-            populateAllowedWords();
+            
         }
         catch(FileNotFoundException e){
             System.out.println(e);
