@@ -1,6 +1,6 @@
 package com.pastimer;
-//bugger bruh
-
+//cursor set, time set
+//add to do list
 import com.badlogic.gdx.physics.bullet.collision._btMprSimplex_t;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -50,7 +50,7 @@ public class TimerScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         stage.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                if (!event.isHandled() && editActive) {
+                if (!event.isHandled()) {
                     stage.unfocusAll();
                     editActive = false;
                 }
@@ -70,7 +70,6 @@ public class TimerScreen implements Screen {
         stage.addActor(mineSweeperScreen);
 
        /* toDoInput = new TextField("hello world", Pastimer.skin);
-
         toDoInput.setPosition(500, 500);
         toDoInput.setSize(150, 150);
         stage.addActor(toDoInput);*/
@@ -143,7 +142,7 @@ public class TimerScreen implements Screen {
 
     private void buildTimer() {
         colon = new Label(":", Pastimer.skin, "time");
-        colon.setPosition(Gdx.graphics.getWidth() / 2 - colon.getWidth() / 2, Gdx.graphics.getHeight() - 225);
+        colon.setPosition(Gdx.graphics.getWidth() / 2 - colon.getWidth() / 2, Gdx.graphics.getHeight() - 239);
         colon.setAlignment(1);
 
         for (int i = 0; i < timeDisplay.length; i++) {
@@ -158,7 +157,6 @@ public class TimerScreen implements Screen {
             timeDisplay[i].setAlignment(1);
             timeDisplay[i].addListener(new InputListener() {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    editActive = true;
                     return true;
                 }
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -166,7 +164,7 @@ public class TimerScreen implements Screen {
                     System.out.println("touch" + count);
                     buildTimerEdit();
                     displayTimerEdit();
-                    
+                    editActive = true;
                 }
             });
             stage.addActor(timeDisplay[i]);
