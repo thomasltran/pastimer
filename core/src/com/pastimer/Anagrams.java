@@ -42,14 +42,17 @@ public class Anagrams implements Screen {
         stage = new Stage(new ScreenViewport());
         possibleWords= new HashSet<String>();
         allowedWords = new HashSet<String>();
+        letters = new ArrayList<String>();
         timer = new Time();
         populateLetters(6);  
         points =0;
+        
       
     }
-    public static String getRandomLetter(){
+    public String getRandomLetter(){
         int rand = (int)(Math.random() * 25);
         String a[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+      
        return a[rand];
        }
     public void populateLetters(int numLetters){
@@ -81,6 +84,10 @@ public class Anagrams implements Screen {
         }
        
     }
+    public void scrambleLetters(){
+        
+
+    }
     
     @Override
     public void show(){
@@ -101,27 +108,17 @@ public class Anagrams implements Screen {
         input.setPosition(500,500);
         stage.addActor(input);
 
-       
-        table = new Table();
-        
-	table.setFillParent(true);
-	table.setDebug(true); // This is optional, but enables debug lines for tables.
-    
-   for(int i= 0; i<board.length; i++){
-    for(int j = 0; j < board[0].length; j++ ){
-        table.add(board[i][j]);
-        if(j==4){
-            table.row();
-        }
-       
-    }
+        Label word = new Label(String.valueOf(points), Pastimer.skin);
+        word.setPosition(560,600);
+        stage.addActor(word);
 
-    }
-    table.setPosition(250, 300);
-    table.setColor(Color.BLACK);
-    table.setSize(500, 600);
-   
-    stage.addActor(table);
+        table = new Table();
+        table.setPosition(700,600);
+        for(int i =0; i<letters.size(); i++){
+        table.add(new Label(letters.get(i), Pastimer.skin));
+        }
+        stage.addActor(table);
+ 
     
     }
     @Override
@@ -130,6 +127,7 @@ public class Anagrams implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
+        
         if(submit.isPressed()&& input.getText().length()>=3){
             if(validAnswer(input.getText())){
                 
