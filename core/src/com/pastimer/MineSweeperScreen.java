@@ -409,7 +409,7 @@ public class MineSweeperScreen implements Screen {
          Vector3 touchPos = new Vector3();
          touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
          camera.unproject(touchPos);
-         int x = (int) (touchPos.x / size);
+         int x =( (int) (touchPos.x / size)) -8;
          int y = (int) ((touchPos.y) / size);
          String strX = String.valueOf(x);
          String strY = String.valueOf(y);
