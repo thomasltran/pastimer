@@ -31,6 +31,7 @@ public class Anagrams implements Screen {
     private Label[][] board;
     private Table table;
     private int points;
+    private Label showPoints;
    
     public Anagrams(Game game){
         this.game = game;
@@ -40,6 +41,7 @@ public class Anagrams implements Screen {
         letters = new ArrayList<String>();
         timer = new Time();
         populateLetters(6);  
+        populatePossibleWords();
         points =0;
         
       
@@ -57,7 +59,7 @@ public class Anagrams implements Screen {
        }
     }
     public boolean validAnswer(String word){
-        if(possibleWords.contains(word)&& !answers.contains(word)){
+        if(possibleWords.contains(word)){
             return true;
         }
         return false;
@@ -66,21 +68,21 @@ public class Anagrams implements Screen {
     }
     public void populatePossibleWords() {
         try{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Scanner input = new Scanner(new FileReader("possibleWords.txt"));
+        Scanner input = new Scanner(new FileReader("C:\\Users\\1524966\\pastimer\\core\\src\\com\\pastimer\\possibleWords.txt"));
         while(input.hasNextLine()){
             String line = input.nextLine().trim();
             line = line.toLowerCase();
             possibleWords.add(line);
+            System.out.println("new word add");
         }
         }
         catch(FileNotFoundException e){
-            System.out.println("File not found");
+            System.out.println("bruh this ducks");
         }
        
     }
     public void scrambleLetters(){
-        
+
 
     }
     
@@ -102,8 +104,13 @@ public class Anagrams implements Screen {
         input = new TextField("" , Pastimer.skin);
         input.setPosition(500,500);
         stage.addActor(input);
+       
+        showPoints = new Label(String.valueOf(points), Pastimer.skin);
+        showPoints.setPosition(560,600);
+        showPoints.setScale(40);
+        stage.addActor(showPoints);
 
-        Label word = new Label(String.valueOf(points), Pastimer.skin);
+       /* Label word = new Label(String.valueOf(points), Pastimer.skin);
         word.setPosition(560,600);
         stage.addActor(word);
 
@@ -113,7 +120,7 @@ public class Anagrams implements Screen {
         table.add(new Label(letters.get(i), Pastimer.skin));
         }
         stage.addActor(table);
- 
+ */
     
     }
     @Override
@@ -121,11 +128,12 @@ public class Anagrams implements Screen {
         Gdx.gl.glClearColor(234 / 255.0f, 172 / 255.0f, 172 / 255.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
+        
         stage.draw();
         
         if(submit.isPressed()&& input.getText().length()>=3){
             if(validAnswer(input.getText())){
-                
+             // if(true) { 
                 switch( input.getText().length()) {
                     case 3:
                         points +=100;
@@ -143,6 +151,14 @@ public class Anagrams implements Screen {
                   }
             }
         }
+        showPoints.setText(String.valueOf(points));
+        
+        table = new Table();
+        table.setPosition(700,600);
+        for(int i =0; i<letters.size(); i++){
+        table.add(new Label(letters.get(i), Pastimer.skin));
+        }
+        stage.addActor(table);
     }
     @Override
     public void resize(int width, int height) {
