@@ -166,7 +166,7 @@ public class Anagrams implements Screen {
                       points +=5000;
                   }
                   answers.add(input.getText());
-                  System.out.println()
+                  
             }
         }
         showPoints.setText(String.valueOf(points));
