@@ -37,7 +37,7 @@ public class Anagrams implements Screen {
         this.game = game;
         stage = new Stage(new ScreenViewport());
         possibleWords= new HashSet<String>();
-        allowedWords = new HashSet<String>();
+        
         letters = new ArrayList<String>();
         answers = new HashSet<String>();
         timer = new Time();
@@ -70,15 +70,15 @@ public class Anagrams implements Screen {
        }
     }
     public boolean validAnswer(String word){
-        if(!possibleWords.contains(word) && answers.contains(word)){
+        if(!possibleWords.contains(word) ){
             return false;
         }
-        //for(int i = 0; i<word.length(); i++){
-          //  if(!letters.contains(word.substring(i, i++))){
-            //    return false;
-           // }
-
-        //}
+        if( answers.contains(word)){
+          return false;
+        
+        }
+        
+         
         return true;
 
 
@@ -90,7 +90,7 @@ public class Anagrams implements Screen {
             String line = input.nextLine().trim();
             line = line.toLowerCase();
             possibleWords.add(line);
-            System.out.println("new word add");
+            
         }
         }
         catch(FileNotFoundException e){
@@ -102,6 +102,32 @@ public class Anagrams implements Screen {
 
 
     }
+    public void submitPressed(){
+        if(validAnswer(input.getText())){
+            System.out.println(input.getText());
+         // if(true) { 
+            switch( input.getText().length()) {
+                case 3:
+                    points +=100;
+                  break;
+                case 4:
+                    points +=250;
+                  break;
+                case 5:
+                  points +=500;
+                break;
+                case 6:
+                    points +=1000;
+                  break;
+                default:
+                  points +=5000;
+                  break;
+              } 
+           
+        answers.add(input.getText());
+    }
+    }   
+    
     
     @Override
     public void show(){
@@ -135,7 +161,6 @@ public class Anagrams implements Screen {
         table.add(new Label(letters.get(i), Pastimer.skin));
         }
         stage.addActor(table);
- 
     
     }
     @Override
@@ -145,33 +170,14 @@ public class Anagrams implements Screen {
         stage.act(delta);
         
         stage.draw();
-        
-        if(submit.isPressed()&& input.getText().length()>=3){
-            if(validAnswer(input.getText())){
-             // if(true) { 
-                switch( input.getText().length()) {
-                    case 3:
-                        points +=100;
-                      break;
-                    case 4:
-                        points +=250;
-                      break;
-                      case 5:
-                      points +=500;
-                      break;
-                      case 6:
-                        points +=1000;
-                      break;
-                    default:
-                      points +=5000;
-                  }
-                  answers.add(input.getText());
-                  
-            }
+        if(submit.isPressed()&& !answers.contains(input.getText())){
+            submitPressed();
         }
+        
         showPoints.setText(String.valueOf(points));
       
     }
+    
     @Override
     public void resize(int width, int height) {
 
